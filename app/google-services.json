@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "172946558721",
+    "project_id": "z-cook",
+    "storage_bucket": "z-cook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172946558721:android:5379c5dbc7bae96f139500",
+        "android_client_info": {
+          "package_name": "com.ziyad.zcook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172946558721-m5nsodg8crmlssk553srr11jtqqgj6j9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ziyad.zcook",
+            "certificate_hash": "d48c39cd7be0c9563b3de0efcbaaee27ab7a809d"
+          }
+        },
+        {
+          "client_id": "172946558721-4us8v1ss4nvn42eth8h1g0v6ntm7kk2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWNendXb2KP-FfAqZo-Jcf57q7RYqoFEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172946558721-4us8v1ss4nvn42eth8h1g0v6ntm7kk2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
