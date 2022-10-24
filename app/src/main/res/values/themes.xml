@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Zcook" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/cyan</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -12,5 +12,58 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/red_hat</item>
+    </style>
+    <style name="Heading0">
+        <item name="android:textSize" tools:targetApi="o">32sp</item>
+        <item name="android:textColor">@color/light_black</item>
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
+    <style name="Heading1">
+        <item name="android:textSize" tools:targetApi="o">24sp</item>
+        <item name="android:textColor">@color/light_black</item>
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
+    <style name="Heading2">
+        <item name="android:textSize" tools:targetApi="o">20sp</item>
+        <item name="android:textColor">@color/light_black</item>
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
+    <style name="Heading3min">
+        <item name="android:textSize" tools:targetApi="o">15sp</item>
+        <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="Heading3min.bold">
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
+    <style name="Heading3">
+        <item name="android:textSize" tools:targetApi="o">16sp</item>
+        <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="Heading3.bold">
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
+    <style name="Heading4">
+        <item name="android:textSize" tools:targetApi="o">12sp</item>
+        <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="Paragraph">
+        <item name="android:textSize" tools:targetApi="o">11sp</item>
+        <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="ParagraphBigger">
+        <item name="android:textSize" tools:targetApi="o">14sp</item>
+        <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="CustomAppBar">
+        <item name="cardElevation" tools:targetApi="o">8dp</item>
+    </style>
+    <style name="CustomEditText">
+        <item name="android:padding" tools:targetApi="o">8dp</item>
+        <item name="android:textSize" tools:targetApi="o">16sp</item>
+    </style>
+    <style name="CustomEditText.Rounded">
+        <item name="android:background">@drawable/rounded_corner</item>
+        <item name="android:textColor">@color/light_black</item>
     </style>
 </resources>

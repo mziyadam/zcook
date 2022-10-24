@@ -3,4 +3,18 @@
     <string name="title_recipe_list">Recipe List</string>
     <string name="title_saved_recipe_list">Saved Recipe List</string>
     <string name="title_settings">Settings</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="register">Register</string>
+    <string name="lupa_password">lupa password?</string>
+    <string name="belum_memiliki_akun">belum memiliki akun?\ </string>
+    <string name="register_lowercase">register</string>
+    <string name="sudah_memiliki_akun">sudah memiliki akun?\ </string>
+    <string name="login_lowercase">login</string>
+    <string name="kirim">Kirim</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="cari_resep">Cari resep</string>
+    <string name="bahan">Bahan :</string>
 </resources>

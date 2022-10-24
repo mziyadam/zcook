@@ -1,9 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.detail.RecipeDetailActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/inter_component_margin_normal"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/ic_arrow_back_ios_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_save"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/inter_component_margin_normal"
+            android:src="@drawable/ic_bookmark_border_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_recipe_name"
+            style="@style/Heading0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/inter_component_margin_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_recipe"
+            tools:text="Nasi Goreng Spesial" />
+
+        <ImageView
+            android:id="@+id/iv_star"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/inter_component_margin_extra_small"
+            app:layout_constraintStart_toStartOf="@+id/tv_recipe_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recipe_name"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <TextView
+            android:id="@+id/tv_rating"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/inter_component_margin_extra_small"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star"
+            app:layout_constraintStart_toEndOf="@+id/iv_star"
+            app:layout_constraintTop_toTopOf="@+id/iv_star"
+            tools:text="4.0" />
+
+        <TextView
+            android:id="@+id/tv_estimated_price"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_extra_small"
+            app:layout_constraintStart_toStartOf="@+id/iv_star"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rating"
+            tools:text="Total harga : ± Rp 15.500" />
+
+        <TextView
+            android:id="@+id/tv_estimated_time"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_extra_small"
+            app:layout_constraintStart_toStartOf="@+id/tv_estimated_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_estimated_price"
+            tools:text="Estimasi waktu masak : ± 20 menit" />
+
+        <TextView
+            android:id="@+id/tv_ingredient_label"
+            style="@style/Heading2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:text="@string/bahan"
+            app:layout_constraintStart_toStartOf="@+id/tv_estimated_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_estimated_time" />
+
+        <LinearLayout
+            android:id="@+id/table_ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/inter_component_margin_normal"
+            android:paddingTop="@dimen/inter_component_margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_label">
+
+            <TextView
+                android:id="@+id/tv_list_ingredient"
+                style="@style/ParagraphBigger"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="176"
+                android:background="@drawable/border"
+                android:padding="@dimen/inter_component_margin_extra_small"
+                android:text="-Nasi putih 1 piring \n-Bawang putih 2 siung \n-Kecap manis 1 sdm \n-Saus sambal 1 sdm \n-Saus tiram 1 sdm \n-Garam 1 sdt \n-Penyedap rasa 1 sdt \n-Daun bawang 1 batang \n-Telur ayam 1 butir \n-Sosis ayam 1 buah, iris \n-Minyak goreng 3 sdm" />
+
+            <TextView
+                android:id="@+id/tv_list_ingredient_price"
+                style="@style/ParagraphBigger"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="152"
+                android:background="@drawable/border"
+                android:padding="@dimen/inter_component_margin_extra_small"
+                android:text="± Rp 3.000 \n± Rp 500 \n± Rp 1.000 (20ml) \n± Rp 500 (10gr) \n± Rp 3.000 (23ml) \n± Rp 2.000 (200gr) \n± Rp 500 (8gr) \n± Rp 1.000 (80gr) \n± Rp 2.000 \n± Rp 1.000 \n± Rp 1000 (3 sdm)" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_steps_label"
+            style="@style/Heading2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:text="Cara membuat :"
+            app:layout_constraintStart_toStartOf="@+id/tv_ingredient_label"
+            app:layout_constraintTop_toBottomOf="@+id/table_ingredient" />
+
+        <TextView
+            android:id="@+id/tv_steps"
+            style="@style/ParagraphBigger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:text="1. Siapkan penggorengan dengan api sedang, tuang margarin atau minyak goreng.\n2. Masukkan bawang putih dan daun bawang yang sudah dicincang halus. Tumis hingga berbau harum atau hingga warnanya keemasan.\n3. Masukkan sosis dan 1 butir telur ayam. Tumis sebentar.\n4. Masukkan bumbu halus dan nasi. Aduk hingga tercampur rata.\n5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n6. Nasi goreng biasa yang sederhana, dan enak siap disajikan."
+            app:layout_constraintStart_toStartOf="@+id/tv_steps_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_steps_label" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_to_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintStart_toStartOf="@id/tv_steps"
+            app:layout_constraintTop_toBottomOf="@id/tv_steps">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/cyan"
+                android:padding="@dimen/inter_component_margin_small">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_sharp_account_circle_24" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/ParagraphBigger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/inter_component_margin_small"
+                    android:layout_marginTop="@dimen/inter_component_margin_small"
+                    android:text="Masuk ke akunmu"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/Paragraph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Masuk agar dapat simpan resep dan review."
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="@+id/textView5"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_review_label"
+            style="@style/Heading3.bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kata orang-orang tentang resep ini"
+android:layout_marginStart="@dimen/inter_component_margin_medium"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            app:layout_constraintStart_toStartOf="@+id/btn_to_login"
+            app:layout_constraintTop_toBottomOf="@+id/btn_to_login" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

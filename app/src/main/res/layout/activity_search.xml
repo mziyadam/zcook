@@ -6,4 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchActivity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CustomAppBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="@dimen/inter_component_margin_normal">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="#FFFFFF"
+                android:src="@drawable/ic_baseline_arrow_back_ios_new_24" />
+
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/CustomEditText.Rounded"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/inter_component_margin_normal"
+                android:hint="@string/cari_resep" />
+
+            <ImageButton
+                android:id="@+id/btn_search"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="#FFFFFF"
+                android:src="@drawable/ic_sharp_search_24" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
