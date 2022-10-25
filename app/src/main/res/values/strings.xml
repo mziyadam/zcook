@@ -5,7 +5,7 @@
     <string name="title_settings">Settings</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="name">Name</string>
+    <string name="name">Nama</string>
     <string name="re_enter_password">Re-enter Password</string>
     <string name="register">Register</string>
     <string name="lupa_password">lupa password?</string>
@@ -17,4 +17,22 @@
     <string name="reset_password">Reset Password</string>
     <string name="cari_resep">Cari resep</string>
     <string name="bahan">Bahan :</string>
+    <string name="simpan">Simpan</string>
+    <string name="ubah_akun">Ubah Akun</string>
+    <string name="ubah_password">Ubah Password</string>
+    <string name="password_lama">Password Lama</string>
+    <string name="password_baru">Password Baru</string>
+    <string name="re_enter_password_baru">Re-enter Password Baru</string>
+    <string name="masuk_ke_akunmu">Masuk ke akunmu</string>
+    <string name="masuk_agar_dapat_simpan_resep_dan_review">Masuk agar dapat simpan resep dan review.</string>
+    <string name="catatan_pribadi">Catatan pribadi</string>
+    <string name="cara_membuat">Cara membuat :</string>
+    <string name="ada_yang_mau_dicatat_dari_resep_ini">ada yang mau dicatat dari resep ini?</string>
+    <string name="login">Login</string>
+    <string name="simpan_catatan">Simpan Catatan</string>
+    <string name="gimana_nih_resepnya">gimana nih resepnya?</string>
+    <string name="simpan_review">Simpan Review</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="resep_tersimpan">Resep Tersimpan</string>
+    <string name="keluar_akun">Keluar Akun</string>
 </resources>

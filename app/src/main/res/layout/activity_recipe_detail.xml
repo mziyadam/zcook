@@ -119,7 +119,7 @@
                 android:layout_weight="176"
                 android:background="@drawable/border"
                 android:padding="@dimen/inter_component_margin_extra_small"
-                android:text="-Nasi putih 1 piring \n-Bawang putih 2 siung \n-Kecap manis 1 sdm \n-Saus sambal 1 sdm \n-Saus tiram 1 sdm \n-Garam 1 sdt \n-Penyedap rasa 1 sdt \n-Daun bawang 1 batang \n-Telur ayam 1 butir \n-Sosis ayam 1 buah, iris \n-Minyak goreng 3 sdm" />
+                tools:text="-Nasi putih 1 piring \n-Bawang putih 2 siung \n-Kecap manis 1 sdm \n-Saus sambal 1 sdm \n-Saus tiram 1 sdm \n-Garam 1 sdt \n-Penyedap rasa 1 sdt \n-Daun bawang 1 batang \n-Telur ayam 1 butir \n-Sosis ayam 1 buah, iris \n-Minyak goreng 3 sdm" />
 
             <TextView
                 android:id="@+id/tv_list_ingredient_price"
@@ -129,7 +129,7 @@
                 android:layout_weight="152"
                 android:background="@drawable/border"
                 android:padding="@dimen/inter_component_margin_extra_small"
-                android:text="± Rp 3.000 \n± Rp 500 \n± Rp 1.000 (20ml) \n± Rp 500 (10gr) \n± Rp 3.000 (23ml) \n± Rp 2.000 (200gr) \n± Rp 500 (8gr) \n± Rp 1.000 (80gr) \n± Rp 2.000 \n± Rp 1.000 \n± Rp 1000 (3 sdm)" />
+                tools:text="± Rp 3.000 \n± Rp 500 \n± Rp 1.000 (20ml) \n± Rp 500 (10gr) \n± Rp 3.000 (23ml) \n± Rp 2.000 (200gr) \n± Rp 500 (8gr) \n± Rp 1.000 (80gr) \n± Rp 2.000 \n± Rp 1.000 \n± Rp 1000 (3 sdm)" />
 
         </LinearLayout>
 
@@ -139,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/inter_component_margin_small"
-            android:text="Cara membuat :"
+            android:text="@string/cara_membuat"
             app:layout_constraintStart_toStartOf="@+id/tv_ingredient_label"
             app:layout_constraintTop_toBottomOf="@+id/table_ingredient" />
 
@@ -150,68 +150,194 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
             android:layout_marginTop="@dimen/inter_component_margin_small"
-            android:text="1. Siapkan penggorengan dengan api sedang, tuang margarin atau minyak goreng.\n2. Masukkan bawang putih dan daun bawang yang sudah dicincang halus. Tumis hingga berbau harum atau hingga warnanya keemasan.\n3. Masukkan sosis dan 1 butir telur ayam. Tumis sebentar.\n4. Masukkan bumbu halus dan nasi. Aduk hingga tercampur rata.\n5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n6. Nasi goreng biasa yang sederhana, dan enak siap disajikan."
+            tools:text="1. Siapkan penggorengan dengan api sedang, tuang margarin atau minyak goreng.\n2. Masukkan bawang putih dan daun bawang yang sudah dicincang halus. Tumis hingga berbau harum atau hingga warnanya keemasan.\n3. Masukkan sosis dan 1 butir telur ayam. Tumis sebentar.\n4. Masukkan bumbu halus dan nasi. Aduk hingga tercampur rata.\n5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n6. Nasi goreng biasa yang sederhana, dan enak siap disajikan."
             app:layout_constraintStart_toStartOf="@+id/tv_steps_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_steps_label" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btn_to_login"
+        <FrameLayout
+            android:id="@+id/frame_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
-            android:layout_marginTop="@dimen/inter_component_margin_normal"
-            app:cardCornerRadius="16dp"
             app:layout_constraintStart_toStartOf="@id/tv_steps"
             app:layout_constraintTop_toBottomOf="@id/tv_steps">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_to_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cyan"
-                android:padding="@dimen/inter_component_margin_small">
+                android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                android:layout_marginTop="@dimen/inter_component_margin_normal"
+                app:cardCornerRadius="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cyan"
+                    android:padding="@dimen/inter_component_margin_small">
+
+                    <ImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_sharp_account_circle_24" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        style="@style/ParagraphBigger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/inter_component_margin_small"
+                        android:layout_marginTop="@dimen/inter_component_margin_small"
+                        android:text="@string/masuk_ke_akunmu"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/iv_profile"
+                        app:layout_constraintTop_toTopOf="@+id/iv_profile" />
+
+                    <TextView
+                        android:id="@+id/tv_email"
+                        style="@style/Paragraph"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/masuk_agar_dapat_simpan_resep_dan_review"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="@+id/tv_name"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/cl_logged_in"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_personal_note_label"
+                    style="@style/Heading2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_small"
+                    android:text="@string/catatan_pribadi"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_personal_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:lines="3"
+                    android:hint="@string/ada_yang_mau_dicatat_dari_resep_ini"
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_normal"
+                    style="@style/CustomEditText.Rounded"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintStart_toStartOf="@+id/tv_personal_note_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_personal_note_label" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_note"
+                    style="@style/SmallButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_normal"
+                    android:text="@string/simpan_catatan"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_personal_note"
+                    app:layout_constraintTop_toBottomOf="@+id/et_personal_note" />
+
+                <TextView
+                    android:id="@+id/tv_personal_note_label2"
+                    style="@style/Heading2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_small"
+                    android:text="@string/catatan_pribadi"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_save_note"/>
 
                 <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_sharp_account_circle_24" />
+                    android:id="@+id/iv_star1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/inter_component_margin_normal"
+                    app:layout_constraintStart_toStartOf="@+id/tv_personal_note_label2"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_personal_note_label2"
+                    app:srcCompat="@drawable/ic_sharp_star_border_24" />
 
-                <TextView
-                    android:id="@+id/textView5"
-                    style="@style/ParagraphBigger"
+                <ImageView
+                    android:id="@+id/iv_star2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_star1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_star1"
+                    app:srcCompat="@drawable/ic_sharp_star_border_24" />
+                <ImageView
+                    android:id="@+id/iv_star3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_star2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_star2"
+                    app:srcCompat="@drawable/ic_sharp_star_border_24" />
+                <ImageView
+                    android:id="@+id/iv_star4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_star3"
+                    app:layout_constraintTop_toTopOf="@+id/iv_star3"
+                    app:srcCompat="@drawable/ic_sharp_star_border_24" />
+                <ImageView
+                    android:id="@+id/iv_star5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_star4"
+                    app:layout_constraintTop_toTopOf="@+id/iv_star4"
+                    app:srcCompat="@drawable/ic_sharp_star_border_24" />
+
+                <EditText
+                    android:id="@+id/et_review"
+                    style="@style/CustomEditText.Rounded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_normal"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:hint="@string/gimana_nih_resepnya"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    app:layout_constraintStart_toStartOf="@+id/iv_star1"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_star1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_review"
+                    style="@style/SmallButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/inter_component_margin_small"
-                    android:layout_marginTop="@dimen/inter_component_margin_small"
-                    android:text="Masuk ke akunmu"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+                    android:layout_marginTop="@dimen/inter_component_margin_normal"
+                    android:text="@string/simpan_review"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_review"
+                    app:layout_constraintTop_toBottomOf="@+id/et_review" />
 
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/Paragraph"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Masuk agar dapat simpan resep dan review."
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_review_label"
             style="@style/Heading3.bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kata orang-orang tentang resep ini"
-android:layout_marginStart="@dimen/inter_component_margin_medium"
+            android:layout_marginStart="@dimen/inter_component_margin_medium"
             android:layout_marginTop="@dimen/inter_component_margin_normal"
-            app:layout_constraintStart_toStartOf="@+id/btn_to_login"
-            app:layout_constraintTop_toBottomOf="@+id/btn_to_login" />
+            android:text="Kata orang-orang tentang resep ini"
+            app:layout_constraintStart_toStartOf="@+id/frame_detail"
+            app:layout_constraintTop_toBottomOf="@+id/frame_detail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

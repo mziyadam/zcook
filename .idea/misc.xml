@@ -4,15 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/drawable/ic_arrow_back_ios_white.xml" value="0.2595" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/drawable/ic_sharp_star_24.xml" value="0.124" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/drawable/ic_zcook_with_text.xml" value="0.196" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/drawable/rounded_corner.xml" value="0.1" />
-        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_change_account.xml" value="0.1" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_change_account.xml" value="0.152" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_change_password.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_recipe_detail.xml" value="0.3305785123966942" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_recipe_detail.xml" value="0.24164810690423164" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_register.xml" value="0.3814773980154355" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_reset_password.xml" value="0.42214532871972316" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/activity_search.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/fragment_dashboard.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/fragment_home.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/layout/fragment_settings.xml" value="0.4" />
         <entry key="..\:/Users/ziyad/android_study/zcook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16" />
       </map>
     </option>

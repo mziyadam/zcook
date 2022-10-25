@@ -66,4 +66,13 @@
         <item name="android:background">@drawable/rounded_corner</item>
         <item name="android:textColor">@color/light_black</item>
     </style>
+    <style name="SmallButton">
+        <item name="android:textSize" tools:targetApi="o">14sp</item>
+        <item name="android:textStyle" tools:targetApi="o">bold</item>
+        <item name="android:backgroundTint">@color/cyan</item>
+        <item name="android:paddingTop">@dimen/inter_component_margin_small</item>
+        <item name="android:paddingBottom">@dimen/inter_component_margin_small</item>
+        <item name="android:paddingStart">@dimen/inter_component_margin_normal</item>
+        <item name="android:paddingEnd">@dimen/inter_component_margin_normal</item>
+    </style>
 </resources>
