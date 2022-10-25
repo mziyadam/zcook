@@ -30,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.navigation_recipe_list, R.id.navigation_saved_recipe_list, R.id.navigation_settings
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 }

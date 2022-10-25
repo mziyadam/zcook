@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="16dp"
+    android:layout_marginVertical="@dimen/inter_component_margin_small"
+    android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/inter_component_margin_normal"
+        android:paddingBottom="@dimen/inter_component_margin_small"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/ParagraphBigger.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Aldi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_star1"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <ImageView
+            android:id="@+id/iv_star2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star1"
+            app:layout_constraintStart_toEndOf="@+id/iv_star1"
+            app:layout_constraintTop_toTopOf="@+id/iv_star1"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <ImageView
+            android:id="@+id/iv_star3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star1"
+            app:layout_constraintStart_toEndOf="@+id/iv_star2"
+            app:layout_constraintTop_toTopOf="@+id/iv_star1"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <ImageView
+            android:id="@+id/iv_star4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star1"
+            app:layout_constraintStart_toEndOf="@+id/iv_star3"
+            app:layout_constraintTop_toTopOf="@+id/iv_star1"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <ImageView
+            android:id="@+id/iv_star5"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_star1"
+            app:layout_constraintStart_toEndOf="@+id/iv_star4"
+            app:layout_constraintTop_toTopOf="@+id/iv_star1"
+            app:srcCompat="@drawable/ic_sharp_star_border_24" />
+
+        <TextView
+            android:id="@+id/tv_review"
+            android:layout_width="wrap_content"
+            style="@style/Paragraph"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            android:layout_height="wrap_content"
+            tools:text="lumayan"
+            app:layout_constraintStart_toStartOf="@+id/iv_star1"
+            app:layout_constraintTop_toBottomOf="@+id/iv_star1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -14,25 +14,25 @@
         android:theme="@style/Theme.Zcook"
         tools:targetApi="31">
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".ui.auth.reset_password.ResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.auth.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".ui.home.settings.change_password.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangeAccountActivity"
+            android:name=".ui.home.settings.change_account.ChangeAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".RecipeDetailActivity"
+            android:name=".ui.detail.RecipeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"

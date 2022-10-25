@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="148dp"
+    app:cardCornerRadius="16dp"
+    android:layout_margin="@dimen/inter_component_margin_small"
+    android:layout_height="168dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:paddingBottom="@dimen/inter_component_margin_small"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_rating"
+            style="@style/Paragraph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/inter_component_margin_small"
+            android:text="4.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_recipe" />
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/iv_recipe"
+            android:layout_width="148dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tv_estimated_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="± Rp 15.500"
+            style="@style/Paragraph"
+            android:layout_margin="@dimen/inter_component_margin_small"
+            app:layout_constraintStart_toStartOf="@+id/iv_recipe"
+            app:layout_constraintTop_toBottomOf="@+id/iv_recipe" />
+
+        <TextView
+            android:id="@+id/tv_recipe_name"
+            style="@style/Heading4"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/inter_component_margin_extra_small"
+            android:layout_marginHorizontal="@dimen/inter_component_margin_small"
+            android:lines="2"
+            tools:text="Nasi Goreng Spesial"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_estimated_price" />
+
+        <ImageView
+            android:id="@+id/iv_star"
+            android:layout_marginEnd="2dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rating"
+            app:layout_constraintEnd_toStartOf="@+id/tv_rating"
+            app:layout_constraintTop_toTopOf="@+id/tv_rating"
+            app:srcCompat="@drawable/ic_sharp_star_24" />
+
+        <ImageView
+            android:id="@+id/iv_save"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="@dimen/inter_component_margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bookmark_border_white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

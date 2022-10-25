@@ -35,4 +35,7 @@
     <string name="pengaturan">Pengaturan</string>
     <string name="resep_tersimpan">Resep Tersimpan</string>
     <string name="keluar_akun">Keluar Akun</string>
+    <string name="masak_apa_kita_hari_ini">Masak apa kita hari ini?</string>
+    <string name="rekomendasi_resep_10ribuan">Rekomendasi resep 10ribuan</string>
+    <string name="semua_resep">Semua resep</string>
 </resources>

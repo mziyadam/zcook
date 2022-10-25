@@ -9,4 +9,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail)
     }
+    companion object{
+        const val RECIPE="recipe"
+    }
 }

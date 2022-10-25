@@ -150,9 +150,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
             android:layout_marginTop="@dimen/inter_component_margin_small"
-            tools:text="1. Siapkan penggorengan dengan api sedang, tuang margarin atau minyak goreng.\n2. Masukkan bawang putih dan daun bawang yang sudah dicincang halus. Tumis hingga berbau harum atau hingga warnanya keemasan.\n3. Masukkan sosis dan 1 butir telur ayam. Tumis sebentar.\n4. Masukkan bumbu halus dan nasi. Aduk hingga tercampur rata.\n5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n6. Nasi goreng biasa yang sederhana, dan enak siap disajikan."
             app:layout_constraintStart_toStartOf="@+id/tv_steps_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_steps_label" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_steps_label"
+            tools:text="1. Siapkan penggorengan dengan api sedang, tuang margarin atau minyak goreng.\n2. Masukkan bawang putih dan daun bawang yang sudah dicincang halus. Tumis hingga berbau harum atau hingga warnanya keemasan.\n3. Masukkan sosis dan 1 butir telur ayam. Tumis sebentar.\n4. Masukkan bumbu halus dan nasi. Aduk hingga tercampur rata.\n5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n6. Nasi goreng biasa yang sederhana, dan enak siap disajikan." />
 
         <FrameLayout
             android:id="@+id/frame_detail"
@@ -207,11 +207,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
                 android:id="@+id/cl_logged_in"
-                android:visibility="gone"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_personal_note_label"
@@ -226,18 +227,19 @@
 
                 <EditText
                     android:id="@+id/et_personal_note"
+                    style="@style/CustomEditText.Rounded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:lines="3"
-                    android:hint="@string/ada_yang_mau_dicatat_dari_resep_ini"
                     android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
                     android:layout_marginTop="@dimen/inter_component_margin_normal"
-                    style="@style/CustomEditText.Rounded"
+                    android:ems="10"
                     android:gravity="start|top"
+                    android:hint="@string/ada_yang_mau_dicatat_dari_resep_ini"
                     android:inputType="textMultiLine"
+                    android:lines="3"
                     app:layout_constraintStart_toStartOf="@+id/tv_personal_note_label"
                     app:layout_constraintTop_toBottomOf="@+id/tv_personal_note_label" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_save_note"
                     style="@style/SmallButton"
@@ -259,7 +261,7 @@
                     android:layout_marginTop="@dimen/inter_component_margin_small"
                     android:text="@string/catatan_pribadi"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_save_note"/>
+                    app:layout_constraintTop_toBottomOf="@+id/btn_save_note" />
 
                 <ImageView
                     android:id="@+id/iv_star1"
@@ -277,6 +279,7 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_star1"
                     app:layout_constraintTop_toTopOf="@+id/iv_star1"
                     app:srcCompat="@drawable/ic_sharp_star_border_24" />
+
                 <ImageView
                     android:id="@+id/iv_star3"
                     android:layout_width="40dp"
@@ -284,6 +287,7 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_star2"
                     app:layout_constraintTop_toTopOf="@+id/iv_star2"
                     app:srcCompat="@drawable/ic_sharp_star_border_24" />
+
                 <ImageView
                     android:id="@+id/iv_star4"
                     android:layout_width="40dp"
@@ -291,6 +295,7 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_star3"
                     app:layout_constraintTop_toTopOf="@+id/iv_star3"
                     app:srcCompat="@drawable/ic_sharp_star_border_24" />
+
                 <ImageView
                     android:id="@+id/iv_star5"
                     android:layout_width="40dp"
@@ -339,5 +344,15 @@
             android:text="Kata orang-orang tentang resep ini"
             app:layout_constraintStart_toStartOf="@+id/frame_detail"
             app:layout_constraintTop_toBottomOf="@+id/frame_detail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_review"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_review_label"
+            tools:listitem="@layout/item_review" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

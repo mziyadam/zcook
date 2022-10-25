@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Zcook" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Zcook" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/cyan</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -47,6 +47,9 @@
         <item name="android:textSize" tools:targetApi="o">12sp</item>
         <item name="android:textColor">@color/light_black</item>
     </style>
+    <style name="Heading4.bold">
+        <item name="fontFamily">@font/red_hat_bold</item>
+    </style>
     <style name="Paragraph">
         <item name="android:textSize" tools:targetApi="o">11sp</item>
         <item name="android:textColor">@color/light_black</item>
@@ -54,6 +57,9 @@
     <style name="ParagraphBigger">
         <item name="android:textSize" tools:targetApi="o">14sp</item>
         <item name="android:textColor">@color/light_black</item>
+    </style>
+    <style name="ParagraphBigger.Bold">
+        <item name="fontFamily">@font/red_hat_bold</item>
     </style>
     <style name="CustomAppBar">
         <item name="cardElevation" tools:targetApi="o">8dp</item>

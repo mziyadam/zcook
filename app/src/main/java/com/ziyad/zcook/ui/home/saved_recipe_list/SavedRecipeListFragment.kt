@@ -1,5 +1,6 @@
 package com.ziyad.zcook.ui.home.saved_recipe_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ziyad.zcook.databinding.FragmentDashboardBinding
+import androidx.lifecycle.lifecycleScope
+import com.ziyad.zcook.databinding.FragmentSavedRecipeListBinding
+import com.ziyad.zcook.ui.adapter.RecipeAdapter
+import com.ziyad.zcook.ui.detail.RecipeDetailActivity
+import com.ziyad.zcook.ui.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SavedRecipeListFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentSavedRecipeListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,16 +29,37 @@ class SavedRecipeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val savedRecipeListViewModel =
-            ViewModelProvider(this).get(SavedRecipeListViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentSavedRecipeListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
+        homeViewModel.allRecipe.observe(viewLifecycleOwner) { allRecipe ->
+            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+                binding.apply {
+                    rvSavedRecipe.apply {
+                        adapter = RecipeAdapter(
+                            savedRecipe, savedRecipe, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                )
+                            }, { recipe ->
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    homeViewModel.saveRecipe(recipe)
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                }
+            }
+        }
+        /*val textView: TextView = binding.textDashboard
         savedRecipeListViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
-        }
+        }*/
         return root
     }
 

@@ -8,9 +8,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/CustomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,8 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
+
             <ImageButton
                 android:id="@+id/btn_search"
                 android:layout_width="32dp"
@@ -38,4 +39,96 @@
                 android:src="@drawable/ic_sharp_search_24" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+<androidx.core.widget.NestedScrollView
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/cv_app_bar"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_recipe_list_slogan"
+            style="@style/Heading1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
+            android:layout_marginTop="@dimen/inter_component_margin_medium"
+            android:text="@string/masak_apa_kita_hari_ini"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_recommendation_below10_label"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            android:text="Rekomendasi resep di bawah 10ribu"
+            app:layout_constraintStart_toStartOf="@+id/tv_recipe_list_slogan"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recipe_list_slogan" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recommendation_below10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_below10_label"
+            tools:listitem="@layout/item_recipe" />
+
+        <TextView
+            android:id="@+id/tv_recommendation10s"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            android:text="@string/rekomendasi_resep_10ribuan"
+            app:layout_constraintStart_toStartOf="@+id/tv_recommendation_below10_label"
+            app:layout_constraintTop_toBottomOf="@+id/rv_recommendation_below10" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recommendation10s"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_small"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recommendation10s"
+            tools:listitem="@layout/item_recipe" />
+
+        <TextView
+            android:id="@+id/tv_all_recipe"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            android:text="@string/semua_resep"
+            app:layout_constraintStart_toStartOf="@+id/tv_recommendation10s"
+            app:layout_constraintTop_toBottomOf="@+id/rv_recommendation10s" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/rv_all_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/inter_component_margin_normal"
+            android:layout_marginTop="@dimen/inter_component_margin_normal"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_all_recipe"
+            tools:listitem="@layout/item_recipe"
+            android:layout_marginBottom="@dimen/app_bar_height"
+            app:spanCount="2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

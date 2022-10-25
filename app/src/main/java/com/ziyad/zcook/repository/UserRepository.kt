@@ -13,6 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.ziyad.zcook.model.Recipe
+import com.ziyad.zcook.utils.recipeDummy
 
 class UserRepository {
     //https://medium.com/firebase-tips-tricks/how-to-create-a-clean-firebase-authentication-using-mvvm-37f9b8eb7336
@@ -89,7 +90,16 @@ class UserRepository {
     suspend fun logout() {
         auth.signOut()
     }
-
+    fun getSavedRecipe(): MutableLiveData<ArrayList<Recipe>> {
+        val allRecipeLiveData = MutableLiveData<ArrayList<Recipe>>()
+        val allRecipe = arrayListOf<Recipe>()
+        //TODO NOT YET IMPLEMENTED
+        for(i in 1..10){
+            allRecipe.add(recipeDummy)
+        }
+        allRecipeLiveData.value = allRecipe
+        return allRecipeLiveData
+    }
     suspend fun saveRecipe(recipe: Recipe) {
         //TODO NOT YET IMPLEMENTED
 
@@ -155,5 +165,18 @@ class UserRepository {
                 statusLiveData.value = "ERROR"
             }
         return statusLiveData
+    }
+
+    companion object {
+        @Volatile
+        private var instance: UserRepository? = null
+        fun getInstance(): UserRepository {
+            return instance ?: synchronized(this) {
+                if (instance == null) {
+                    instance = UserRepository()
+                }
+                return instance as UserRepository
+            }
+        }
     }
 }

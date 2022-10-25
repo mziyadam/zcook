@@ -7,4 +7,5 @@
     <dimen name="inter_component_margin_normal">16dp</dimen>
     <dimen name="inter_component_margin_small">8dp</dimen>
     <dimen name="inter_component_margin_extra_small">4dp</dimen>
+    <dimen name="app_bar_height">64dp</dimen>
 </resources>

@@ -1,5 +1,9 @@
 package com.ziyad.zcook.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Recipe(
     val id:String,
     val name:String,
@@ -10,4 +14,4 @@ data class Recipe(
     val listIngredientPrice:String,
     val steps:String,
     val listReview:ArrayList<Review>
-)
+):Parcelable

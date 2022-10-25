@@ -1,17 +1,23 @@
 package com.ziyad.zcook.ui.home.recipe_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ziyad.zcook.databinding.FragmentHomeBinding
+import androidx.lifecycle.lifecycleScope
+import com.ziyad.zcook.databinding.FragmentRecipeListBinding
+import com.ziyad.zcook.ui.adapter.RecipeAdapter
+import com.ziyad.zcook.ui.detail.RecipeDetailActivity
+import com.ziyad.zcook.ui.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RecipeListFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentRecipeListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,15 +28,65 @@ class RecipeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val recipeListViewModel =
-            ViewModelProvider(this).get(RecipeListViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        recipeListViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        homeViewModel.allRecipe.observe(viewLifecycleOwner) { allRecipe ->
+            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+                binding.apply {
+                    rvAllRecipe.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, savedRecipe, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                )
+                            }, { recipe ->
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    homeViewModel.saveRecipe(recipe)
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                    rvRecommendation10s.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, savedRecipe, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                )
+                            }, { recipe ->
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    homeViewModel.saveRecipe(recipe)
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                    rvRecommendationBelow10.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, savedRecipe, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                )
+                            }, { recipe ->
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    homeViewModel.saveRecipe(recipe)
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                }
+            }
         }
         return root
     }
