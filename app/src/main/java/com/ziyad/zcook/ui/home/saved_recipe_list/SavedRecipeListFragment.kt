@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +43,7 @@ class SavedRecipeListFragment : Fragment() {
                                     Intent(
                                         requireContext(),
                                         RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
                                 lifecycleScope.launch(Dispatchers.IO) {

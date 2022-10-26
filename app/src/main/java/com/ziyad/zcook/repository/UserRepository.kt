@@ -20,6 +20,10 @@ class UserRepository {
     private val auth = Firebase.auth
     private val _currentUserLiveData = MutableLiveData<FirebaseUser>()
     val currentUserLiveData: LiveData<FirebaseUser> = _currentUserLiveData
+    private val savedRecipe=MutableLiveData<ArrayList<Recipe>>()
+    init {
+        savedRecipe.value= arrayListOf()
+    }
 
     init {
         _currentUserLiveData.value = auth.currentUser
@@ -97,8 +101,9 @@ class UserRepository {
         for(i in 1..10){
             allRecipe.add(recipeDummy)
         }
-        allRecipeLiveData.value = allRecipe
-        return allRecipeLiveData
+        savedRecipe.postValue(allRecipe)
+
+        return savedRecipe
     }
     suspend fun saveRecipe(recipe: Recipe) {
         //TODO NOT YET IMPLEMENTED

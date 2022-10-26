@@ -28,8 +28,8 @@
                 android:src="@drawable/ic_baseline_arrow_back_ios_new_24" />
 
             <EditText
-                android:id="@+id/et_email"
-                style="@style/CustomEditText.Rounded"
+                android:id="@+id/et_search_query"
+                style="@style/CustomEditText.Rounded.Search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -47,11 +47,12 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_result"
         android:layout_marginHorizontal="@dimen/inter_component_margin_normal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:spanCount="2"
+        app:spanCount="2"
         tools:listitem="@layout/item_recipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

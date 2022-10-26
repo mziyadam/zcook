@@ -72,6 +72,9 @@
         <item name="android:background">@drawable/rounded_corner</item>
         <item name="android:textColor">@color/light_black</item>
     </style>
+    <style name="CustomEditText.Rounded.Search">
+        <item name="android:textSize" tools:targetApi="o">12sp</item>
+    </style>
     <style name="SmallButton">
         <item name="android:textSize" tools:targetApi="o">14sp</item>
         <item name="android:textStyle" tools:targetApi="o">bold</item>

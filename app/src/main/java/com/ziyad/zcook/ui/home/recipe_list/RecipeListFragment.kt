@@ -12,6 +12,7 @@ import com.ziyad.zcook.databinding.FragmentRecipeListBinding
 import com.ziyad.zcook.ui.adapter.RecipeAdapter
 import com.ziyad.zcook.ui.detail.RecipeDetailActivity
 import com.ziyad.zcook.ui.home.HomeViewModel
+import com.ziyad.zcook.ui.search.SearchActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -44,11 +45,17 @@ class RecipeListFragment : Fragment() {
                                     Intent(
                                         requireContext(),
                                         RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    homeViewModel.saveRecipe(recipe)
+                                if (savedRecipe.contains(recipe)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe)
+                                    }
                                 }
                             })
                         setHasFixedSize(true)
@@ -60,11 +67,17 @@ class RecipeListFragment : Fragment() {
                                     Intent(
                                         requireContext(),
                                         RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    homeViewModel.saveRecipe(recipe)
+                                if (savedRecipe.contains(recipe)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe)
+                                    }
                                 }
                             })
                         setHasFixedSize(true)
@@ -76,17 +89,26 @@ class RecipeListFragment : Fragment() {
                                     Intent(
                                         requireContext(),
                                         RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE, recipe)
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe)
                                 )
                             }, { recipe ->
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    homeViewModel.saveRecipe(recipe)
+                                if (savedRecipe.contains(recipe)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe)
+                                    }
                                 }
                             })
                         setHasFixedSize(true)
                     }
                 }
             }
+        }
+        binding.btnSearch.setOnClickListener {
+            startActivity(Intent(requireContext(),SearchActivity::class.java))
         }
         return root
     }
