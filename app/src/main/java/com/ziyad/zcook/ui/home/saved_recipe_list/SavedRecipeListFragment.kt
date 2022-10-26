@@ -33,12 +33,12 @@ class SavedRecipeListFragment : Fragment() {
 
         _binding = FragmentSavedRecipeListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        homeViewModel.allRecipe.observe(viewLifecycleOwner) { allRecipe ->
-            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+        homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+            homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
                 binding.apply {
                     rvSavedRecipe.apply {
                         adapter = RecipeAdapter(
-                            savedRecipe, savedRecipe, { recipe ->
+                            savedRecipe, savedRecipeId, { recipe ->
                                 startActivity(
                                     Intent(
                                         requireContext(),
@@ -47,7 +47,7 @@ class SavedRecipeListFragment : Fragment() {
                                 )
                             }, { recipe ->
                                 lifecycleScope.launch(Dispatchers.IO) {
-                                    homeViewModel.saveRecipe(recipe)
+                                    homeViewModel.saveRecipe(recipe.id)
                                 }
                             })
                         setHasFixedSize(true)

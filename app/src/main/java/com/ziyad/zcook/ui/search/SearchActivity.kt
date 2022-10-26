@@ -3,6 +3,8 @@ package com.ziyad.zcook.ui.search
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.ziyad.zcook.databinding.ActivitySearchBinding
@@ -14,45 +16,66 @@ import kotlinx.coroutines.launch
 class SearchActivity : AppCompatActivity() {
     private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var binding: ActivitySearchBinding
+    override fun onBackPressed() {
+        super.onBackPressed()
+        searchViewModel.clearRecipe()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.apply {
             btnBack.setOnClickListener {
+                searchViewModel.clearRecipe()
                 finish()
             }
             btnSearch.setOnClickListener {
                 lifecycleScope.launch(Dispatchers.IO) {
                     searchViewModel.searchRecipe(etSearchQuery.text.toString())
+//                    // for input manager and initializing it.
+//                    val inputMethodManager =
+//                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//
+//                    // on below line hiding our keyboard.
+//                    inputMethodManager.hideSoftInputFromWindow(
+//                        this@SearchActivity.currentFocus?.windowToken,
+//                        0
+//                    )
+                    startActivity(Intent(this@SearchActivity, SearchActivity::class.java).putExtra("query",etSearchQuery.text.toString()))
+                    finish()
                 }
             }
-            searchViewModel.searchResult.observe(this@SearchActivity) { searchResult ->
-                if (searchResult != null)
-                    searchViewModel.savedRecipe.observe(this@SearchActivity) { savedRecipe ->
-                        binding.rvSearchResult.apply {
-                            adapter = RecipeAdapter(
-                                searchResult, savedRecipe, { recipe ->
-                                    startActivity(
-                                        Intent(
-                                            this@SearchActivity,
-                                            RecipeDetailActivity::class.java
-                                        ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
-                                    )
-                                }, { recipe ->
-                                    if (savedRecipe.contains(recipe)) {
-                                        lifecycleScope.launch(Dispatchers.IO) {
-                                            searchViewModel.removeRecipeFromSaved(recipe)
-                                        }
-                                    } else {
-                                        lifecycleScope.launch(Dispatchers.IO) {
-                                            searchViewModel.saveRecipe(recipe)
-                                        }
+            val mQuery=intent.getStringExtra("query")
+            if(mQuery!=null){
+                binding.etSearchQuery.setText(mQuery)
+            }
+            searchViewModel.savedRecipeId.observe(this@SearchActivity) { savedRecipeId ->
+                searchViewModel.searchResult.observe(this@SearchActivity) { searchResult ->
+                    Log.d("TEZ", "Current data: $savedRecipeId")
+                    binding.rvSearchResult.apply {
+                        adapter = RecipeAdapter(
+                            searchResult, savedRecipeId, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        this@SearchActivity,
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
+                                )
+                            }, { recipe ->
+                                if (savedRecipeId.contains(recipe.id)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        searchViewModel.removeRecipeFromSaved(recipe.id)
                                     }
-                                })
-                            setHasFixedSize(true)
-                        }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        searchViewModel.saveRecipe(recipe.id)
+                                    }
+                                }
+                            })
+                        setHasFixedSize(true)
                     }
+                }
             }
 
         }

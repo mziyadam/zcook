@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.ziyad.zcook.model.Recipe
 import com.ziyad.zcook.utils.recipeDummy
@@ -18,15 +19,15 @@ import com.ziyad.zcook.utils.recipeDummy
 class UserRepository {
     //https://medium.com/firebase-tips-tricks/how-to-create-a-clean-firebase-authentication-using-mvvm-37f9b8eb7336
     private val auth = Firebase.auth
+    private val database = FirebaseFirestore.getInstance()
     private val _currentUserLiveData = MutableLiveData<FirebaseUser>()
     val currentUserLiveData: LiveData<FirebaseUser> = _currentUserLiveData
     private val savedRecipe=MutableLiveData<ArrayList<Recipe>>()
-    init {
-        savedRecipe.value= arrayListOf()
-    }
-
+    private val savedRecipeId=MutableLiveData<ArrayList<String>>()
     init {
         _currentUserLiveData.value = auth.currentUser
+        savedRecipe.value= arrayListOf()
+        savedRecipeId.value= arrayListOf()
     }
 
     suspend fun login(email: String, password: String) {
@@ -94,23 +95,72 @@ class UserRepository {
     suspend fun logout() {
         auth.signOut()
     }
-    fun getSavedRecipe(): MutableLiveData<ArrayList<Recipe>> {
-        val allRecipeLiveData = MutableLiveData<ArrayList<Recipe>>()
-        val allRecipe = arrayListOf<Recipe>()
-        //TODO NOT YET IMPLEMENTED
+
+    fun getSavedRecipeId(): MutableLiveData<ArrayList<String>> {
+        val allRecipeId = arrayListOf<String>()
+        //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
         for(i in 1..10){
-            allRecipe.add(recipeDummy)
+            allRecipeId.add(recipeDummy.id)
+        }
+
+//        database.collection("recipes").addSnapshotListener { snapshot, e ->
+//            if (e != null) {
+//                Log.w("TEZ", "Listen failed.", e)
+//                return@addSnapshotListener
+//            }
+//
+//            if (snapshot != null && !snapshot.isEmpty) {
+//                for (doc in snapshot) {
+//                    val mRecipe=doc.toObject(Recipe::class.java)
+//                    if(allRecipeId.contains(mRecipe.id)){
+//                        allRecipe.add(mRecipe)
+//                    }
+//                    Log.d("TEZ", "Current data: $doc")
+//                }
+//            } else {
+//                Log.d("TEZ", "Current data: null")
+//            }
+//        }
+        savedRecipeId.postValue(allRecipeId)
+
+        return savedRecipeId
+    }
+    fun getSavedRecipe(): MutableLiveData<ArrayList<Recipe>> {
+        val allRecipe = arrayListOf<Recipe>()
+        val allRecipeId = arrayListOf<String>()
+        //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
+        for(i in 1..10){
+            allRecipeId.add(recipeDummy.id)
+        }
+
+        database.collection("recipes").addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("TEZ", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (doc in snapshot) {
+                    val mRecipe=doc.toObject(Recipe::class.java)
+                    if(allRecipeId.contains(mRecipe.id)){
+                        allRecipe.add(mRecipe)
+                    }
+                    Log.d("TEZ", "Current data: $doc")
+                }
+            } else {
+                Log.d("TEZ", "Current data: null")
+            }
         }
         savedRecipe.postValue(allRecipe)
 
         return savedRecipe
     }
-    suspend fun saveRecipe(recipe: Recipe) {
+    suspend fun saveRecipe(recipeId: String) {
         //TODO NOT YET IMPLEMENTED
 
     }
 
-    suspend fun removeRecipeFromSaved(recipe: Recipe) {
+    suspend fun removeRecipeFromSaved(recipeId: String) {
         //TODO NOT YET IMPLEMENTED
 
     }

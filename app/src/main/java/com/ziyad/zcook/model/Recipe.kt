@@ -5,13 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Recipe(
-    val id:String,
-    val name:String,
-    val imageUrl:String,
-    val estimatedPrice:Int,
-    val estimatedTime:String,
-    val listIngredient:String,
-    val listIngredientPrice:String,
-    val steps:String,
-    val listReview:ArrayList<Review>
+    val id:String= "",
+    val name:String= "",
+    val imageUrl:String= "",
+    val estimatedPrice:Int= 0,
+    val estimatedTime:String= "",
+    val listIngredient:String= "",
+    val listIngredientPrice:String= "",
+    val steps:String= "",
+    val listReview:ArrayList<Review> = arrayListOf()
 ):Parcelable

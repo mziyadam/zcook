@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MahasiswaKos(
-    val id:String,
-    val name:String,
-    val listSaved: ArrayList<Recipe>,
-    val listPersonalNote: ArrayList<PersonalNote>
+    val id:String= "",
+    val name:String= "",
+    val listSavedRecipeId: ArrayList<String> = arrayListOf(),
+    val listPersonalNote: ArrayList<PersonalNote> = arrayListOf()
 ): Parcelable

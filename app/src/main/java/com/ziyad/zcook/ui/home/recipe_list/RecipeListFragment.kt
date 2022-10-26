@@ -36,11 +36,11 @@ class RecipeListFragment : Fragment() {
         val root: View = binding.root
 
         homeViewModel.allRecipe.observe(viewLifecycleOwner) { allRecipe ->
-            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+            homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { listSavedRecipeId ->
                 binding.apply {
                     rvAllRecipe.apply {
                         adapter = RecipeAdapter(
-                            allRecipe, savedRecipe, { recipe ->
+                            allRecipe, listSavedRecipeId, { recipe ->
                                 startActivity(
                                     Intent(
                                         requireContext(),
@@ -48,35 +48,13 @@ class RecipeListFragment : Fragment() {
                                     ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                if (savedRecipe.contains(recipe)) {
+                                if (listSavedRecipeId.contains(recipe.id)) {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.removeRecipeFromSaved(recipe)
+                                        homeViewModel.removeRecipeFromSaved(recipe.id)
                                     }
                                 } else {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.saveRecipe(recipe)
-                                    }
-                                }
-                            })
-                        setHasFixedSize(true)
-                    }
-                    rvRecommendation10s.apply {
-                        adapter = RecipeAdapter(
-                            allRecipe, savedRecipe, { recipe ->
-                                startActivity(
-                                    Intent(
-                                        requireContext(),
-                                        RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
-                                )
-                            }, { recipe ->
-                                if (savedRecipe.contains(recipe)) {
-                                    lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.removeRecipeFromSaved(recipe)
-                                    }
-                                } else {
-                                    lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.saveRecipe(recipe)
+                                        homeViewModel.saveRecipe(recipe.id)
                                     }
                                 }
                             })
@@ -84,21 +62,43 @@ class RecipeListFragment : Fragment() {
                     }
                     rvRecommendationBelow10.apply {
                         adapter = RecipeAdapter(
-                            allRecipe, savedRecipe, { recipe ->
+                            allRecipe, listSavedRecipeId, { recipe ->
                                 startActivity(
                                     Intent(
                                         requireContext(),
                                         RecipeDetailActivity::class.java
-                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe)
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                if (savedRecipe.contains(recipe)) {
+                                if (listSavedRecipeId.contains(recipe.id)) {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.removeRecipeFromSaved(recipe)
+                                        homeViewModel.removeRecipeFromSaved(recipe.id)
                                     }
                                 } else {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        homeViewModel.saveRecipe(recipe)
+                                        homeViewModel.saveRecipe(recipe.id)
+                                    }
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                    rvRecommendation10s.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, listSavedRecipeId, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
+                                )
+                            }, { recipe ->
+                                if (listSavedRecipeId.contains(recipe.id)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe.id)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe.id)
                                     }
                                 }
                             })

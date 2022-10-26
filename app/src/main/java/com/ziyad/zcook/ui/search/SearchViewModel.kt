@@ -13,18 +13,22 @@ class SearchViewModel : ViewModel() {
 
     val searchResult = recipeRepository.searchResult
 
-    val savedRecipe = userRepository.getSavedRecipe()
+    val savedRecipeId = userRepository.getSavedRecipeId()
 
-    suspend fun searchRecipe(query: String) {
+    fun searchRecipe(query: String) {
         recipeRepository.searchRecipe(query)
+//    recipeRepository.injectData()
     }
 
-
-    suspend fun saveRecipe(recipe: Recipe) {
-        userRepository.saveRecipe(recipe)
+    fun clearRecipe(){
+        recipeRepository.clearSearch()
     }
 
-    suspend fun removeRecipeFromSaved(recipe: Recipe) {
-        userRepository.removeRecipeFromSaved(recipe)
+    suspend fun saveRecipe(recipeId: String) {
+        userRepository.saveRecipe(recipeId)
+    }
+
+    suspend fun removeRecipeFromSaved(recipeId: String) {
+        userRepository.removeRecipeFromSaved(recipeId)
     }
 }

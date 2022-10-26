@@ -10,7 +10,7 @@ import com.ziyad.zcook.utils.loadImage
 import com.ziyad.zcook.utils.toCurrencyFormat
 
 class RecipeAdapter(
-    private val items: ArrayList<Recipe>, private val savedItems: ArrayList<Recipe>,
+    private val items: ArrayList<Recipe>, private val listSavedRecipeId: ArrayList<String>,
     private val onItemClicked: (Recipe) -> Unit, private val onSaveIconClicked: (Recipe) -> Unit
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     class RecipeViewHolder(val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root)
@@ -56,7 +56,7 @@ class RecipeAdapter(
                 }
                 // Check if saved
                 // TODO ADD INTENT IN CORRESPONDENT ACTIVITIES
-                if (savedItems.contains(recipe)) {
+                if (listSavedRecipeId.contains(recipe.id)) {
                     ivSave.setImageDrawable(saveDrawable)
                 } else {
                     ivSave.setImageDrawable(saveBorderDrawable)
