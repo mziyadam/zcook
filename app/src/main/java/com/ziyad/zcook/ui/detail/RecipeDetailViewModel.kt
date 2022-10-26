@@ -16,11 +16,11 @@ class RecipeDetailViewModel: ViewModel() {
 
     fun currentRecipe(recipeId:String)=recipeRepository.getRecipe(recipeId)
 
-    suspend fun saveRecipe(recipe: Recipe){
-        userRepository.saveRecipe(recipe)
+    suspend fun saveRecipe(recipeId: String){
+        userRepository.saveRecipe(recipeId)
     }
 
-    suspend fun removeRecipeFromSaved(recipe: Recipe){
-        userRepository.removeRecipeFromSaved(recipe)
+    suspend fun removeRecipeFromSaved(recipeId: String){
+        userRepository.removeRecipeFromSaved(recipeId)
     }
 }

@@ -1,5 +1,6 @@
 package com.ziyad.zcook.utils
 
+import android.util.Patterns
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.ziyad.zcook.model.Recipe
@@ -22,6 +23,9 @@ fun String.toCurrencyFormat(): String {
     return numberFormat.format(doubleValue)
 }
 
+fun CharSequence?.isValidEmail() =
+    !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
 fun getCurrentDateTime(): Long {
     return Calendar.getInstance().timeInMillis
 }
@@ -37,8 +41,8 @@ fun sortMillisToDateDescending(dateList: ArrayList<Long>): ArrayList<String> {
     val result = dateList.sortedByDescending {
         it
     }
-    val sortedDateList= arrayListOf<String>()
-    for(i in result){
+    val sortedDateList = arrayListOf<String>()
+    for (i in result) {
         sortedDateList.add(convertMillisToString(i))
     }
     return sortedDateList

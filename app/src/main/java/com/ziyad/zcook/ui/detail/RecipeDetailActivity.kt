@@ -53,14 +53,14 @@ class RecipeDetailActivity : AppCompatActivity() {
                         btnSave.setImageDrawable(saveDrawable)
                         btnSaveReview.setOnClickListener {
                             lifecycleScope.launch(Dispatchers.IO) {
-                                recipeDetailViewModel.removeRecipeFromSaved(mRecipe)
+                                recipeDetailViewModel.removeRecipeFromSaved(mRecipe.id)
                             }
                         }
                     } else {
                         btnSave.setImageDrawable(saveBorderDrawable)
                         btnSaveReview.setOnClickListener {
                             lifecycleScope.launch(Dispatchers.IO) {
-                                recipeDetailViewModel.saveRecipe(mRecipe)
+                                recipeDetailViewModel.saveRecipe(mRecipe.id)
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 package com.ziyad.zcook.ui.home.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ziyad.zcook.databinding.FragmentSettingsBinding
+import com.ziyad.zcook.ui.auth.login.LoginActivity
 
 class SettingsFragment : Fragment() {
 
@@ -27,7 +29,9 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding.btnToLogin.setOnClickListener {
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        }
 //        val textView: TextView = binding.textNotifications
 //        settingsViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it

@@ -31,7 +31,6 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_to_login"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
@@ -82,6 +81,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_saved_recipe"
+        android:visibility="gone"
         android:layout_marginHorizontal="@dimen/inter_component_margin_normal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
