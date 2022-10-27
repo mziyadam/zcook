@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -33,6 +34,8 @@ class SearchActivity : AppCompatActivity() {
                 finish()
             }
             btnSearch.setOnClickListener {
+                rvSearchResult.visibility= View.GONE
+                searchViewModel.clearRecipe()
                 lifecycleScope.launch(Dispatchers.IO) {
                     searchViewModel.searchRecipe(etSearchQuery.text.toString())
 //                    // for input manager and initializing it.

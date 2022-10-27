@@ -83,14 +83,14 @@ class SettingsFragment : Fragment() {
                 }
 
             }
-            homeViewModel.currentUserLiveData.observe(requireActivity()){
+            homeViewModel.currentUserLiveData.observe(viewLifecycleOwner){
                 if(it==null){
                     btnToLogin.isClickable=true
                     btnLogout.visibility=View.GONE
                     btnToChangeAccount.visibility=View.GONE
                     btnToChangePassword.visibility=View.GONE
-                    tvName.text=requireContext().resources.getText(R.string.masuk_ke_akunmu)
-                    tvEmail.text=requireContext().resources.getText(R.string.masuk_agar_dapat_simpan_resep_dan_review)
+                    tvName.text="Masuk ke akunmu"
+                    tvEmail.text="Masuk agar dapat simpan resep dan review."
                 }else{
                     btnToLogin.isClickable=false
                     btnLogout.visibility=View.VISIBLE

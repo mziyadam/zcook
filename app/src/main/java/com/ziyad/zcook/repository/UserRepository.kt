@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.ziyad.zcook.model.MahasiswaKos
+import com.ziyad.zcook.model.PersonalNote
 import com.ziyad.zcook.model.Recipe
 import com.ziyad.zcook.utils.recipeDummy
 import java.lang.Exception
@@ -44,6 +45,8 @@ class UserRepository {
                     Log.d(TAG, "signInWithEmail:success")
                     _currentUserLiveData.value = auth.currentUser
                     message.postValue("SUCCESS")
+                    getSavedRecipeId()
+                    getSavedRecipe()
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     message.postValue(task.exception.toString())
@@ -101,26 +104,26 @@ class UserRepository {
             }
         return message
     }
-
-    fun getCurrentMahasiswaKos(): MutableLiveData<MahasiswaKos> {
-        val mCurrentUser = auth.currentUser
-        database.collection("mahasiswa_kos").document(mCurrentUser!!.uid)
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.w("TEZ", "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
-                    Log.d("TEZ", "Current data: $mahasiswaKos")
-                    currentMahasiswaKos.postValue(mahasiswaKos)
-                } else {
-                    Log.d("TEZ", "Current data: null")
-                }
-            }
-        return currentMahasiswaKos
-    }
+//
+//    fun getCurrentMahasiswaKos(): MutableLiveData<MahasiswaKos> {
+//        val mCurrentUser = auth.currentUser
+//        database.collection("mahasiswa_kos").document(mCurrentUser!!.uid)
+//            .addSnapshotListener { snapshot, e ->
+//                if (e != null) {
+//                    Log.w("TEZ", "Listen failed.", e)
+//                    return@addSnapshotListener
+//                }
+//
+//                if (snapshot != null && snapshot.exists()) {
+//                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
+//                    Log.d("TEZ", "Current data: $mahasiswaKos")
+//                    currentMahasiswaKos.postValue(mahasiswaKos)
+//                } else {
+//                    Log.d("TEZ", "Current data: null")
+//                }
+//            }
+//        return currentMahasiswaKos
+//    }
 
     suspend fun resetPassword(email: String): MutableLiveData<String> {
         val message = MutableLiveData<String>()
@@ -143,6 +146,8 @@ class UserRepository {
         message.postValue("LOADING")
         try {
             auth.signOut()
+            savedRecipeId.postValue(arrayListOf())
+            savedRecipe.postValue(arrayListOf())
             _currentUserLiveData.postValue(auth.currentUser)
             message.postValue("SUCCESS")
         } catch (e: Exception) {
@@ -164,6 +169,7 @@ class UserRepository {
 
                     if (snapshot != null && snapshot.exists()) {
                         val allRecipeId = arrayListOf<String>()
+                        savedRecipeId.postValue(allRecipeId)
                         val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
                         Log.d(TAG, "DocumentSnapshot data: ${snapshot.data}")
                         for (i in mahasiswaKos!!.listSavedRecipeId) {
@@ -186,6 +192,7 @@ class UserRepository {
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid)
                 .addSnapshotListener { snapshot, e ->
+                    Log.d("TEZaZ", "Current data: $e")
                     if (e != null) {
                         Log.w("TEZ", "Listen failed.", e)
                         return@addSnapshotListener
@@ -195,11 +202,12 @@ class UserRepository {
                         val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
                         val allRecipe = arrayListOf<Recipe>()
                         val allRecipeId = arrayListOf<String>()
+                        savedRecipe.postValue(allRecipe)
                         Log.d(TAG, "DocumentSnapshot data: ${snapshot.data}")
                         for (i in mahasiswaKos!!.listSavedRecipeId) {
                             allRecipeId.add(i)
                         }
-//                        Log.d("TEZZ", "Current data: $allRecipeId")
+                        Log.d("TEZaZ", "Current data: $allRecipeId")
                         database.collection("recipes")
                             .addSnapshotListener { mSnapshot, mE ->
                                 if (mE != null) {
@@ -225,7 +233,6 @@ class UserRepository {
                     }
                 }
         }
-
 
         return savedRecipe
     }
@@ -284,30 +291,142 @@ class UserRepository {
         }
     }
 
+    fun getPersonalNote(recipeId: String): MutableLiveData<String>{
+        val currentUser = auth.currentUser
+        val note = MutableLiveData<String>()
+        note.postValue("")
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(currentUser.uid).addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w("TEZ", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    var mNote=""
+                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
+                    Log.d("TEZZZ", "DocumentSnapshot data: ${snapshot.data}")
+                    for (i in mahasiswaKos!!.listPersonalNote) {
+                        Log.d("TEZZZ", "ada data: ${i} apakah sama dengan $recipeId")
+                        if(i.recipeId==recipeId){
+                            mNote=i.note
+                        }
+                    }
+                    Log.d("TEZZ", "Current data: $mNote")
+                    note.postValue(mNote)
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                }
+            }
+        }
+
+        return note
+    }
+
+    suspend fun addPersonalNote(recipeId: String, note: String): MutableLiveData<String> {
+        //TODO NOT YET IMPLEMENTED
+        val currentUser = auth.currentUser
+        val statusLiveData = MutableLiveData<String>()
+        statusLiveData.postValue("LOADING")
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(currentUser.uid).get().addOnSuccessListener { snapshot->
+                if (snapshot != null && snapshot.exists()) {
+                    val mPersonalNote = PersonalNote(recipeId, note)
+                    val mMahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
+                    Log.d("TEZZ", "Current data: $mMahasiswaKos")
+                    for(i in mMahasiswaKos.listPersonalNote){
+                        if(i.recipeId==recipeId){
+                            mMahasiswaKos.listPersonalNote.remove(i)
+                        }
+                    }
+                    mMahasiswaKos.listPersonalNote.add(mPersonalNote)
+                    database.collection("mahasiswa_kos").document(currentUser.uid).set(mMahasiswaKos).addOnSuccessListener {
+                        statusLiveData.postValue("SUCCESS")
+                        Log.d("TEZZ", "SUCCESS")
+                    }.addOnFailureListener {
+                        statusLiveData.postValue(it.toString())
+                    }
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                    statusLiveData.postValue("Null")
+                }
+            }
+        }
+        return statusLiveData
+    }
+
     suspend fun changeEmailAndName(email: String, name: String): MutableLiveData<String> {
         val user = auth.currentUser
         val statusLiveData = MutableLiveData<String>()
-        statusLiveData.value = ""
+        statusLiveData.postValue("LOADING")
         val profileUpdates = userProfileChangeRequest {
             displayName = name
         }
-        //TODO SUS2
+        //TODO SUS2 && ubah data user di database
         user!!.apply {
             updateEmail(email)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "User email address updated.")
-                        statusLiveData.value.plus("ERR")
-                        _currentUserLiveData.value = auth.currentUser
+
                     }
+                }.addOnFailureListener {
+                    Log.d("TEZZ", "Error : $it")
+                    statusLiveData.value.plus("ERR")
+                    _currentUserLiveData.postValue(auth.currentUser)
                 }
+
             updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
+                .addOnCompleteListener { mTask ->
+                    if (mTask.isSuccessful) {
                         Log.d(TAG, "User email address updated.")
-                        statusLiveData.value.plus("ERR")
-                        _currentUserLiveData.value = auth.currentUser
+                        val mCurrentUser = auth.currentUser
+                        val mahasiswaKos = MahasiswaKos(
+                            mCurrentUser!!.uid,
+                            mCurrentUser.displayName!!
+                        )
+                        currentMahasiswaKos.postValue(mahasiswaKos)
+                        statusLiveData.postValue("SUCCESS")
+                        database.collection("mahasiswa_kos")
+                            .document(mahasiswaKos.id)
+                            .set(mahasiswaKos)
+                            .addOnSuccessListener {
+                                _currentUserLiveData.postValue(auth.currentUser)
+                                currentMahasiswaKos.postValue(mahasiswaKos)
+//                                statusLiveData.postValue("SUCCESS")
+                            }.addOnFailureListener {
+                                Log.d("TEZZ", "Error : $it")
+                                statusLiveData.postValue("$it")
+                                _currentUserLiveData.postValue(auth.currentUser)
+                            }
+                        database.collection("recipes").get().addOnSuccessListener { mSnapshot ->
+                            if (mSnapshot != null && !mSnapshot.isEmpty) {
+                                for (doc in mSnapshot) {
+                                    val mRecipe = doc.toObject(Recipe::class.java)
+                                    for(i in mRecipe.listReview){
+                                        if(i.userId==mCurrentUser.uid){
+                                            val newReview=i.copy(userName= mCurrentUser.displayName.toString())
+                                            mRecipe.listReview.remove(i)
+                                            mRecipe.listReview.add(newReview)
+                                        }
+                                    }
+                                    database.collection("recipes").document(mRecipe.id).set(mRecipe).addOnSuccessListener {
+                                        Log.d("TEZ", "Current data: $doc")
+                                    }.addOnFailureListener {
+                                        Log.d("TEZ", "Error : $it")
+                                    }
+                                    Log.d("TEZ", "Current data: $doc")
+                                }
+                            } else {
+                                Log.d("TEZ", "Current data: null")
+                            }
+
+                        }
                     }
+                }.addOnFailureListener {
+                    Log.d("TEZZ", "Error : $it")
+                    statusLiveData.value.plus("ERR")
+                    _currentUserLiveData.postValue(auth.currentUser)
                 }
         }
         return statusLiveData

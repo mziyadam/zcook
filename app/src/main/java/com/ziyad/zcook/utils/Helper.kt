@@ -7,6 +7,7 @@ import com.ziyad.zcook.model.Recipe
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 
 fun ImageView.loadImage(url: String?) {
@@ -14,6 +15,8 @@ fun ImageView.loadImage(url: String?) {
         .load(url)
         .into(this)
 }
+
+fun Double.to1Digit()=(this * 10.0).roundToInt() / 10.0
 
 fun String.toCurrencyFormat(): String {
     val localeID = Locale("in", "ID")

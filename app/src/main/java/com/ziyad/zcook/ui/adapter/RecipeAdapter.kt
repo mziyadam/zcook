@@ -7,6 +7,7 @@ import com.ziyad.zcook.R
 import com.ziyad.zcook.databinding.ItemRecipeBinding
 import com.ziyad.zcook.model.Recipe
 import com.ziyad.zcook.utils.loadImage
+import com.ziyad.zcook.utils.to1Digit
 import com.ziyad.zcook.utils.toCurrencyFormat
 
 class RecipeAdapter(
@@ -49,7 +50,7 @@ class RecipeAdapter(
             binding.apply {
                 ivRecipe.loadImage(recipe.imageUrl)
                 tvEstimatedPrice.text = "± ${recipe.estimatedPrice.toString().toCurrencyFormat()}"
-                tvRating.text = rating.toString()
+                tvRating.text = rating.to1Digit().toString()
                 tvRecipeName.text = recipe.name
                 ivSave.setOnClickListener {
                     onSaveIconClicked(recipe)

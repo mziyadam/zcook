@@ -3,7 +3,11 @@ package com.ziyad.zcook.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.ziyad.zcook.model.MahasiswaKos
+import com.ziyad.zcook.model.PersonalNote
 import com.ziyad.zcook.model.Recipe
 import com.ziyad.zcook.model.Review
 import com.ziyad.zcook.utils.recipeDummy
@@ -13,6 +17,7 @@ import kotlin.collections.ArrayList
 class RecipeRepository {
     //https://codingwithtashi.medium.com/mvvm-architecture-with-firebase-firestore-android-series-java-part-2-2-a527c45edb97
     private val database = FirebaseFirestore.getInstance()
+    private val auth = Firebase.auth
     private val allRecipeLiveData = MutableLiveData<ArrayList<Recipe>>()
     private val recipeBelow10LiveData = MutableLiveData<ArrayList<Recipe>>()
     private val recipe10sLiveData = MutableLiveData<ArrayList<Recipe>>()
@@ -76,8 +81,8 @@ class RecipeRepository {
             if (snapshot != null && !snapshot.isEmpty) {
                 val allRecipe = arrayListOf<Recipe>()
                 for (doc in snapshot) {
-                    val mRecipe=doc.toObject(Recipe::class.java)
-                    if(mRecipe.name.lowercase().contains(query.lowercase())){
+                    val mRecipe = doc.toObject(Recipe::class.java)
+                    if (mRecipe.name.lowercase().contains(query.lowercase())) {
                         allRecipe.add(mRecipe)
                     }
                     Log.d("TEZ", "Current data: $doc")
@@ -89,7 +94,7 @@ class RecipeRepository {
         }
     }
 
-    fun clearSearch(){
+    fun clearSearch() {
         _searchResult.postValue(arrayListOf())
     }
 
@@ -101,32 +106,60 @@ class RecipeRepository {
         allRecipeInRange.postValue(arrayListOf())
         database.collection("recipes").whereGreaterThanOrEqualTo("estimatedPrice", startPrice)
             .whereLessThanOrEqualTo("estimatedPrice", endPrice).addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("TEZ", "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                val allRecipe = arrayListOf<Recipe>()
-                for (doc in snapshot) {
-                    allRecipe.add(doc.toObject(Recipe::class.java))
-                    Log.d("TEZ", "Current data: $doc")
+                if (e != null) {
+                    Log.w("TEZ", "Listen failed.", e)
+                    return@addSnapshotListener
                 }
-                allRecipeInRange.postValue(allRecipe)
-            } else {
-                Log.d("TEZ", "Current data: null")
+
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val allRecipe = arrayListOf<Recipe>()
+                    for (doc in snapshot) {
+                        allRecipe.add(doc.toObject(Recipe::class.java))
+                        Log.d("TEZ", "Current data: $doc")
+                    }
+                    allRecipeInRange.postValue(allRecipe)
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                }
             }
-        }
 
         return allRecipeInRange
     }
 
-    fun getRecipeBelow10()=getAllRecipeByPriceRange(0, 9999)
+    fun getRecipeBelow10() = getAllRecipeByPriceRange(0, 9999)
 
-    fun getRecipe10s()=getAllRecipeByPriceRange(10000,19999)
+    fun getRecipe10s() = getAllRecipeByPriceRange(10000, 19999)
 
-    suspend fun addRatingAndReview(rating: Double, review: String) {
+    suspend fun addRatingAndReview(recipeId: String, rating: Double, review: String): MutableLiveData<String> {
         //TODO NOT YET IMPLEMENTED
+        val currentUser = auth.currentUser
+        val statusLiveData = MutableLiveData<String>()
+        statusLiveData.postValue("LOADING")
+        currentUser?.let {
+            database.collection("recipes").document(recipeId).get().addOnSuccessListener { snapshot->
+                val mReview = Review(currentUser.uid, currentUser.displayName!!,rating,review)
+                if (snapshot != null && snapshot.exists()) {
+                    val mRecipe = snapshot.toObject(Recipe::class.java)!!
+//                    Log.d("TEZZZ", "Current data: $mRecipe")
+                    for(i in mRecipe.listReview){
+                        if(i.userId==currentUser.uid){
+                            mRecipe.listReview.remove(i)
+                        }
+                    }
+                    mRecipe.listReview.add(mReview)
+                    database.collection("recipes").document(recipeId).set(mRecipe).addOnSuccessListener {
+                        statusLiveData.postValue("SUCCESS")
+                        Log.d("TEZZZ", "SUCCESS")
+                    }.addOnFailureListener {
+                        statusLiveData.postValue(it.toString())
+                    }
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                    statusLiveData.postValue("Null")
+                }
+            }
+        }
+        return statusLiveData
     }
 
     suspend fun injectData() {
@@ -170,7 +203,7 @@ class RecipeRepository {
         database.collection("recipes")
             .document(randomId)
             .set(mRecipe)
-            .addOnSuccessListener {
+            .addOnCompleteListener {
                 Log.w("TEZ", "added $it")
             }.addOnFailureListener {
                 Log.w("TEZ", "Error $it")

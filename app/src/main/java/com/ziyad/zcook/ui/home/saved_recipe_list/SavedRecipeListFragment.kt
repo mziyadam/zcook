@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class SavedRecipeListFragment : Fragment() {
 
     private var _binding: FragmentSavedRecipeListBinding? = null
-
+    private lateinit var homeViewModel: HomeViewModel
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -30,7 +30,7 @@ class SavedRecipeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        homeViewModel =
             ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
         _binding = FragmentSavedRecipeListBinding.inflate(inflater, container, false)
@@ -82,6 +82,37 @@ class SavedRecipeListFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+                homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
+                    rvSavedRecipe.apply {
+                        adapter = RecipeAdapter(
+                            savedRecipe, savedRecipeId, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
+                                )
+                            }, { recipe ->
+                                if (savedRecipeId.contains(recipe.id)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe.id)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe.id)
+                                    }
+                                }
+                            })
+                        setHasFixedSize(true)
+                    }
+                }
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
