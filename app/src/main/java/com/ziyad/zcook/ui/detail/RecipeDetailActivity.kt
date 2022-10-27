@@ -127,8 +127,8 @@ class RecipeDetailActivity : AppCompatActivity() {
                                     mRecipe.id,
                                     etPersonalNote.text.toString()
                                 )
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    message.observe(this@RecipeDetailActivity){
+                                lifecycleScope.launch(Dispatchers.Main) {
+                                    message.observe(this@RecipeDetailActivity) {
                                         when (it) {
                                             "SUCCESS" -> {
                                                 Toast.makeText(
@@ -144,7 +144,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             }
-                                            else->{
+                                            else -> {
                                                 Toast.makeText(
                                                     this@RecipeDetailActivity,
                                                     it,
@@ -157,39 +157,38 @@ class RecipeDetailActivity : AppCompatActivity() {
                             }
                         }
                         btnSaveReview.setOnClickListener {
-                            val mStar = recipeDetailViewModel.star
+                            val mStar=recipeDetailViewModel.star.value
                             Log.w("TEZZ", mStar.toString())
-                            recipeDetailViewModel.star.observe(this@RecipeDetailActivity) { mStar ->
                                 if (mStar != 0.0) {
                                     lifecycleScope.launch(Dispatchers.IO) {
                                         val message = recipeDetailViewModel.addRatingAndReview(
                                             mRecipe.id,
-                                            mStar,
+                                            mStar!!,
                                             etReview.text.toString()
                                         )
                                         lifecycleScope.launch(Dispatchers.Main) {
-                                            message.observe(this@RecipeDetailActivity) {
-                                                when (it) {
+                                            message.observe(this@RecipeDetailActivity) {mIt->
+                                                when (mIt) {
                                                     "SUCCESS" -> {
-//                                                        Toast.makeText(
-//                                                            this@RecipeDetailActivity,
-//                                                            "Success",
-//                                                            Toast.LENGTH_SHORT
-//                                                        ).show()
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Success",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
                                                     "LOADING" -> {
-//                                                        Toast.makeText(
-//                                                            this@RecipeDetailActivity,
-//                                                            "Loading",
-//                                                            Toast.LENGTH_SHORT
-//                                                        ).show()
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Loading",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
                                                     else -> {
-//                                                        Toast.makeText(
-//                                                            this@RecipeDetailActivity,
-//                                                            it,
-//                                                            Toast.LENGTH_SHORT
-//                                                        ).show()
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            mIt,
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
                                                 }
                                             }
@@ -202,7 +201,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                            }
+
                         }
                         recipeDetailViewModel.savedRecipeId.observe(this@RecipeDetailActivity) { savedRecipeId ->
                             // Drawables for save

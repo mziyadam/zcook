@@ -17,22 +17,17 @@ import com.ziyad.zcook.utils.recipeDummy
 import java.lang.Exception
 
 class UserRepository {
-    //https://medium.com/firebase-tips-tricks/how-to-create-a-clean-firebase-authentication-using-mvvm-37f9b8eb7336
     private val auth = Firebase.auth
     private val database = FirebaseFirestore.getInstance()
     private val _currentUserLiveData = MutableLiveData<FirebaseUser>()
     val currentUserLiveData: LiveData<FirebaseUser> = _currentUserLiveData
-
-    //    val currentUser: FirebaseUser? = auth.currentUser
     private val savedRecipe = MutableLiveData<ArrayList<Recipe>>()
     private val savedRecipeId = MutableLiveData<ArrayList<String>>()
-    private val currentMahasiswaKos = MutableLiveData<MahasiswaKos>()
 
     init {
         _currentUserLiveData.value = auth.currentUser
         savedRecipe.value = arrayListOf()
         savedRecipeId.value = arrayListOf()
-        currentMahasiswaKos.value = MahasiswaKos()
     }
 
     suspend fun login(email: String, password: String): MutableLiveData<String> {
@@ -85,7 +80,6 @@ class UserRepository {
                                     .set(mahasiswaKos)
                                     .addOnSuccessListener {
                                         _currentUserLiveData.postValue(auth.currentUser)
-                                        currentMahasiswaKos.postValue(mahasiswaKos)
                                         message.postValue("SUCCESS")
                                     }
                             } else {
@@ -104,26 +98,6 @@ class UserRepository {
             }
         return message
     }
-//
-//    fun getCurrentMahasiswaKos(): MutableLiveData<MahasiswaKos> {
-//        val mCurrentUser = auth.currentUser
-//        database.collection("mahasiswa_kos").document(mCurrentUser!!.uid)
-//            .addSnapshotListener { snapshot, e ->
-//                if (e != null) {
-//                    Log.w("TEZ", "Listen failed.", e)
-//                    return@addSnapshotListener
-//                }
-//
-//                if (snapshot != null && snapshot.exists()) {
-//                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
-//                    Log.d("TEZ", "Current data: $mahasiswaKos")
-//                    currentMahasiswaKos.postValue(mahasiswaKos)
-//                } else {
-//                    Log.d("TEZ", "Current data: null")
-//                }
-//            }
-//        return currentMahasiswaKos
-//    }
 
     suspend fun resetPassword(email: String): MutableLiveData<String> {
         val message = MutableLiveData<String>()
@@ -238,7 +212,6 @@ class UserRepository {
     }
 
     suspend fun saveRecipe(recipeId: String) {
-        //TODO NOT YET IMPLEMENTED
         val currentUser = auth.currentUser
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid).get()
@@ -291,67 +264,70 @@ class UserRepository {
         }
     }
 
-    fun getPersonalNote(recipeId: String): MutableLiveData<String>{
+    fun getPersonalNote(recipeId: String): MutableLiveData<String> {
         val currentUser = auth.currentUser
         val note = MutableLiveData<String>()
         note.postValue("")
         currentUser?.let {
-            database.collection("mahasiswa_kos").document(currentUser.uid).addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.w("TEZ", "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    var mNote=""
-                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
-                    Log.d("TEZZZ", "DocumentSnapshot data: ${snapshot.data}")
-                    for (i in mahasiswaKos!!.listPersonalNote) {
-                        Log.d("TEZZZ", "ada data: ${i} apakah sama dengan $recipeId")
-                        if(i.recipeId==recipeId){
-                            mNote=i.note
-                        }
+            database.collection("mahasiswa_kos").document(currentUser.uid)
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        Log.w("TEZ", "Listen failed.", e)
+                        return@addSnapshotListener
                     }
-                    Log.d("TEZZ", "Current data: $mNote")
-                    note.postValue(mNote)
-                } else {
-                    Log.d("TEZ", "Current data: null")
+
+                    if (snapshot != null && snapshot.exists()) {
+                        var mNote = ""
+                        val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
+                        Log.d("TEZZZ", "DocumentSnapshot data: ${snapshot.data}")
+                        for (i in mahasiswaKos!!.listPersonalNote) {
+                            Log.d("TEZZZ", "ada data: ${i} apakah sama dengan $recipeId")
+                            if (i.recipeId == recipeId) {
+                                mNote = i.note
+                            }
+                        }
+                        Log.d("TEZZ", "Current data: $mNote")
+                        note.postValue(mNote)
+                    } else {
+                        Log.d("TEZ", "Current data: null")
+                    }
                 }
-            }
         }
 
         return note
     }
 
     suspend fun addPersonalNote(recipeId: String, note: String): MutableLiveData<String> {
-        //TODO NOT YET IMPLEMENTED
         val currentUser = auth.currentUser
         val statusLiveData = MutableLiveData<String>()
         statusLiveData.postValue("LOADING")
         currentUser?.let {
-            database.collection("mahasiswa_kos").document(currentUser.uid).get().addOnSuccessListener { snapshot->
-                if (snapshot != null && snapshot.exists()) {
-                    val mPersonalNote = PersonalNote(recipeId, note)
-                    val mMahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
-                    Log.d("TEZZ", "Current data: $mMahasiswaKos")
-                    for(i in mMahasiswaKos.listPersonalNote){
-                        if(i.recipeId==recipeId){
-                            mMahasiswaKos.listPersonalNote.remove(i)
+            database.collection("mahasiswa_kos").document(currentUser.uid).get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot != null && snapshot.exists()) {
+                        val mPersonalNote = PersonalNote(recipeId, note)
+                        val mMahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
+                        Log.d("TEZZ", "Current data: $mMahasiswaKos")
+                        for (i in mMahasiswaKos.listPersonalNote) {
+                            if (i.recipeId == recipeId) {
+                                mMahasiswaKos.listPersonalNote.remove(i)
+                            }
                         }
+                        mMahasiswaKos.listPersonalNote.add(mPersonalNote)
+                        database.collection("mahasiswa_kos").document(currentUser.uid)
+                            .set(mMahasiswaKos).addOnSuccessListener {
+                                statusLiveData.postValue("SUCCESS")
+                                Log.d("TEZZ", "SUCCESS")
+                            }.addOnFailureListener {
+                                statusLiveData.postValue(it.toString())
+                            }
+                    } else {
+                        Log.d("TEZ", "Current data: null")
+                        statusLiveData.postValue("Null")
                     }
-                    mMahasiswaKos.listPersonalNote.add(mPersonalNote)
-                    database.collection("mahasiswa_kos").document(currentUser.uid).set(mMahasiswaKos).addOnSuccessListener {
-                        statusLiveData.postValue("SUCCESS")
-                        Log.d("TEZZ", "SUCCESS")
-                    }.addOnFailureListener {
-                        statusLiveData.postValue(it.toString())
-                    }
-                } else {
-                    Log.d("TEZ", "Current data: null")
-                    statusLiveData.postValue("Null")
                 }
-            }
         }
+
         return statusLiveData
     }
 
@@ -362,7 +338,6 @@ class UserRepository {
         val profileUpdates = userProfileChangeRequest {
             displayName = name
         }
-        //TODO SUS2 && ubah data user di database
         user!!.apply {
             updateEmail(email)
                 .addOnCompleteListener { task ->
@@ -385,15 +360,12 @@ class UserRepository {
                             mCurrentUser!!.uid,
                             mCurrentUser.displayName!!
                         )
-                        currentMahasiswaKos.postValue(mahasiswaKos)
                         statusLiveData.postValue("SUCCESS")
                         database.collection("mahasiswa_kos")
                             .document(mahasiswaKos.id)
                             .set(mahasiswaKos)
                             .addOnSuccessListener {
                                 _currentUserLiveData.postValue(auth.currentUser)
-                                currentMahasiswaKos.postValue(mahasiswaKos)
-//                                statusLiveData.postValue("SUCCESS")
                             }.addOnFailureListener {
                                 Log.d("TEZZ", "Error : $it")
                                 statusLiveData.postValue("$it")
@@ -403,18 +375,20 @@ class UserRepository {
                             if (mSnapshot != null && !mSnapshot.isEmpty) {
                                 for (doc in mSnapshot) {
                                     val mRecipe = doc.toObject(Recipe::class.java)
-                                    for(i in mRecipe.listReview){
-                                        if(i.userId==mCurrentUser.uid){
-                                            val newReview=i.copy(userName= mCurrentUser.displayName.toString())
+                                    for (i in mRecipe.listReview) {
+                                        if (i.userId == mCurrentUser.uid) {
+                                            val newReview =
+                                                i.copy(userName = mCurrentUser.displayName.toString())
                                             mRecipe.listReview.remove(i)
                                             mRecipe.listReview.add(newReview)
                                         }
                                     }
-                                    database.collection("recipes").document(mRecipe.id).set(mRecipe).addOnSuccessListener {
-                                        Log.d("TEZ", "Current data: $doc")
-                                    }.addOnFailureListener {
-                                        Log.d("TEZ", "Error : $it")
-                                    }
+                                    database.collection("recipes").document(mRecipe.id).set(mRecipe)
+                                        .addOnSuccessListener {
+                                            Log.d("TEZ", "Current data: $doc")
+                                        }.addOnFailureListener {
+                                            Log.d("TEZ", "Error : $it")
+                                        }
                                     Log.d("TEZ", "Current data: $doc")
                                 }
                             } else {
@@ -425,37 +399,39 @@ class UserRepository {
                     }
                 }.addOnFailureListener {
                     Log.d("TEZZ", "Error : $it")
-                    statusLiveData.value.plus("ERR")
+                    statusLiveData.value.plus("$it")
                     _currentUserLiveData.postValue(auth.currentUser)
                 }
         }
+
         return statusLiveData
     }
 
     suspend fun changePassword(oldPassword: String, newPassword: String): MutableLiveData<String> {
         val user = auth.currentUser
         val statusLiveData = MutableLiveData<String>()
+        statusLiveData.postValue("LOADING")
         val credential = EmailAuthProvider.getCredential(
             user?.email.toString(),
             oldPassword
         )
 
-// Prompt the user to re-provide their sign-in credentials
         user?.reauthenticate(credential)
-            ?.addOnCompleteListener {
+            ?.addOnSuccessListener {
                 user.updatePassword(newPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         _currentUserLiveData.value = auth.currentUser
 
-                        statusLiveData.value = "SUCCESS"
+                        Log.w(TAG, task.toString())
+                        statusLiveData.postValue("SUCCESS")
                     } else {
                         Log.w(TAG, task.exception)
-                        statusLiveData.value = "ERROR"
+                        statusLiveData.postValue("$it")
                     }
                 }
             }?.addOnFailureListener {
                 Log.w(TAG, it)
-                statusLiveData.value = "ERROR"
+                statusLiveData.postValue("$it")
             }
         return statusLiveData
     }

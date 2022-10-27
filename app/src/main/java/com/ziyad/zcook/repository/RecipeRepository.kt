@@ -15,7 +15,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class RecipeRepository {
-    //https://codingwithtashi.medium.com/mvvm-architecture-with-firebase-firestore-android-series-java-part-2-2-a527c45edb97
     private val database = FirebaseFirestore.getInstance()
     private val auth = Firebase.auth
     private val allRecipeLiveData = MutableLiveData<ArrayList<Recipe>>()
@@ -27,6 +26,7 @@ class RecipeRepository {
         allRecipeLiveData.value = arrayListOf()
         recipeBelow10LiveData.value = arrayListOf()
         recipe10sLiveData.value = arrayListOf()
+        currentRecipe.value = Recipe()
     }
 
     fun getRecipe(recipeId: String): MutableLiveData<Recipe> {
@@ -44,6 +44,7 @@ class RecipeRepository {
                 Log.d("TEZ", "Current data: null")
             }
         }
+
         return currentRecipe
     }
 
@@ -71,7 +72,8 @@ class RecipeRepository {
 
     private val _searchResult = MutableLiveData<ArrayList<Recipe>>()
     val searchResult: LiveData<ArrayList<Recipe>> = _searchResult
-    fun searchRecipe(query: String) {
+
+    suspend fun searchRecipe(query: String) {
         database.collection("recipes").addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("TEZ", "Listen failed.", e)
@@ -94,7 +96,7 @@ class RecipeRepository {
         }
     }
 
-    fun clearSearch() {
+    suspend fun clearSearch() {
         _searchResult.postValue(arrayListOf())
     }
 
@@ -130,35 +132,43 @@ class RecipeRepository {
 
     fun getRecipe10s() = getAllRecipeByPriceRange(10000, 19999)
 
-    suspend fun addRatingAndReview(recipeId: String, rating: Double, review: String): MutableLiveData<String> {
-        //TODO NOT YET IMPLEMENTED
+    suspend fun addRatingAndReview(
+        recipeId: String,
+        rating: Double,
+        review: String
+    ): MutableLiveData<String> {
         val currentUser = auth.currentUser
         val statusLiveData = MutableLiveData<String>()
         statusLiveData.postValue("LOADING")
+
         currentUser?.let {
-            database.collection("recipes").document(recipeId).get().addOnSuccessListener { snapshot->
-                val mReview = Review(currentUser.uid, currentUser.displayName!!,rating,review)
-                if (snapshot != null && snapshot.exists()) {
-                    val mRecipe = snapshot.toObject(Recipe::class.java)!!
-//                    Log.d("TEZZZ", "Current data: $mRecipe")
-                    for(i in mRecipe.listReview){
-                        if(i.userId==currentUser.uid){
-                            mRecipe.listReview.remove(i)
+            database.collection("recipes").document(recipeId).get()
+                .addOnSuccessListener { snapshot ->
+                    val mReview = Review(currentUser.uid, currentUser.displayName!!, rating, review)
+                    if (snapshot != null && snapshot.exists()) {
+                        val mRecipe = snapshot.toObject(Recipe::class.java)!!
+
+                        Log.d("TEZ", "Current data: $mRecipe")
+                        for (i in mRecipe.listReview) {
+                            if (i.userId == currentUser.uid) {
+                                mRecipe.listReview.remove(i)
+                            }
                         }
+                        mRecipe.listReview.add(mReview)
+                        database.collection("recipes").document(recipeId).set(mRecipe)
+                            .addOnSuccessListener {
+                                statusLiveData.postValue("SUCCESS")
+                                Log.d("TEZ", "SUCCESS")
+                            }.addOnFailureListener {
+                                statusLiveData.postValue(it.toString())
+                            }
+                    } else {
+                        Log.d("TEZ", "Current data: null")
+                        statusLiveData.postValue("Null")
                     }
-                    mRecipe.listReview.add(mReview)
-                    database.collection("recipes").document(recipeId).set(mRecipe).addOnSuccessListener {
-                        statusLiveData.postValue("SUCCESS")
-                        Log.d("TEZZZ", "SUCCESS")
-                    }.addOnFailureListener {
-                        statusLiveData.postValue(it.toString())
-                    }
-                } else {
-                    Log.d("TEZ", "Current data: null")
-                    statusLiveData.postValue("Null")
                 }
-            }
         }
+
         return statusLiveData
     }
 

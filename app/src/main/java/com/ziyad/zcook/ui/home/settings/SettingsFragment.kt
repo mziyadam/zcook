@@ -43,16 +43,16 @@ class SettingsFragment : Fragment() {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
             btnToChangeAccount.setOnClickListener {
-                startActivity(Intent(requireContext(),ChangeAccountActivity::class.java))
+                startActivity(Intent(requireContext(), ChangeAccountActivity::class.java))
             }
             btnToChangePassword.setOnClickListener {
-                startActivity(Intent(requireContext(),ChangePasswordActivity::class.java))
+                startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
             }
             btnLogout.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.IO){
-                    val message=homeViewModel.logout()
-                    lifecycleScope.launch(Dispatchers.Main){
-                        message.observe(requireActivity()){
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val message = homeViewModel.logout()
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        message.observe(requireActivity()) {
                             when (it) {
                                 "SUCCESS" -> {
                                     Toast.makeText(
@@ -60,7 +60,12 @@ class SettingsFragment : Fragment() {
                                         "Success",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    startActivity(Intent(requireContext(),HomeActivity::class.java))
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            HomeActivity::class.java
+                                        )
+                                    )
                                     requireActivity().finish()
                                 }
                                 "LOADING" -> {
@@ -70,7 +75,7 @@ class SettingsFragment : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                                else->{
+                                else -> {
                                     Toast.makeText(
                                         requireContext(),
                                         it,
@@ -83,28 +88,24 @@ class SettingsFragment : Fragment() {
                 }
 
             }
-            homeViewModel.currentUserLiveData.observe(viewLifecycleOwner){
-                if(it==null){
-                    btnToLogin.isClickable=true
-                    btnLogout.visibility=View.GONE
-                    btnToChangeAccount.visibility=View.GONE
-                    btnToChangePassword.visibility=View.GONE
-                    tvName.text="Masuk ke akunmu"
-                    tvEmail.text="Masuk agar dapat simpan resep dan review."
-                }else{
-                    btnToLogin.isClickable=false
-                    btnLogout.visibility=View.VISIBLE
-                    btnToChangeAccount.visibility=View.VISIBLE
-                    btnToChangePassword.visibility=View.VISIBLE
-                    tvName.text=it.displayName
-                    tvEmail.text=it.email
+            homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) {
+                if (it == null) {
+                    btnToLogin.isClickable = true
+                    btnLogout.visibility = View.GONE
+                    btnToChangeAccount.visibility = View.GONE
+                    btnToChangePassword.visibility = View.GONE
+                    tvName.text = "Masuk ke akunmu"
+                    tvEmail.text = "Masuk agar dapat simpan resep dan review."
+                } else {
+                    btnToLogin.isClickable = false
+                    btnLogout.visibility = View.VISIBLE
+                    btnToChangeAccount.visibility = View.VISIBLE
+                    btnToChangePassword.visibility = View.VISIBLE
+                    tvName.text = it.displayName
+                    tvEmail.text = it.email
                 }
             }
         }
-//        val textView: TextView = binding.textNotifications
-//        settingsViewModel.text.observe(requireActivity()) {
-//            textView.text = it
-//        }
         return root
     }
 

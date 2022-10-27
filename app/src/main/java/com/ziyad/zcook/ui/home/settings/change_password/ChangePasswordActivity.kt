@@ -12,18 +12,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ChangePasswordActivity : AppCompatActivity() {
-    private val changePasswordViewModel:ChangePasswordViewModel by viewModels()
+    private val changePasswordViewModel: ChangePasswordViewModel by viewModels()
     private lateinit var binding: ActivityChangePasswordBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityChangePasswordBinding.inflate(layoutInflater)
+        binding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.apply {
             btnSave.setOnClickListener {
                 val oldPassword = etOldPassword.text.toString()
                 val password = etPassword.text.toString()
                 val reenterPassword = etReenterPassword.text.toString()
-                if (oldPassword == "" || password == ""|| reenterPassword == "") {
+                if (oldPassword == "" || password == "" || reenterPassword == "") {
                     Toast.makeText(
                         this@ChangePasswordActivity,
                         "Lengkapi data",
@@ -36,11 +36,12 @@ class ChangePasswordActivity : AppCompatActivity() {
                             "Password dan Re-enter Password tidak cocok",
                             Toast.LENGTH_SHORT
                         ).show()
-                    }else {
-                        lifecycleScope.launch(Dispatchers.IO){
-                            val message=changePasswordViewModel.changePassword(oldPassword,password)
-                            lifecycleScope.launch(Dispatchers.Main){
-                                message.observe(this@ChangePasswordActivity){
+                    } else {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            val message =
+                                changePasswordViewModel.changePassword(oldPassword, password)
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                message.observe(this@ChangePasswordActivity) {
                                     when (it) {
                                         "SUCCESS" -> {
                                             Toast.makeText(
@@ -57,7 +58,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         }
-                                        else->{
+                                        else -> {
                                             Toast.makeText(
                                                 this@ChangePasswordActivity,
                                                 it,

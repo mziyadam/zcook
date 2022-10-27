@@ -23,40 +23,42 @@ class ReviewAdapter(private val items: ArrayList<Review>) :
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         val review = items[position]
-        val starDrawable=holder.itemView.context.resources.getDrawable(R.drawable.ic_sharp_star_24)
-        val starBorderDrawable=holder.itemView.context.resources.getDrawable(R.drawable.ic_sharp_star_border_24)
+        val starDrawable =
+            holder.itemView.context.resources.getDrawable(R.drawable.ic_sharp_star_24)
+        val starBorderDrawable =
+            holder.itemView.context.resources.getDrawable(R.drawable.ic_sharp_star_border_24)
         holder.binding.apply {
-            tvName.text=review.userName
-            when(review.rating){
-                1.0->{
+            tvName.text = review.userName
+            when (review.rating) {
+                1.0 -> {
                     ivStar1.setImageDrawable(starDrawable)
                     ivStar2.setImageDrawable(starBorderDrawable)
                     ivStar3.setImageDrawable(starBorderDrawable)
                     ivStar4.setImageDrawable(starBorderDrawable)
                     ivStar5.setImageDrawable(starBorderDrawable)
                 }
-                2.0->{
+                2.0 -> {
                     ivStar1.setImageDrawable(starDrawable)
                     ivStar2.setImageDrawable(starDrawable)
                     ivStar3.setImageDrawable(starBorderDrawable)
                     ivStar4.setImageDrawable(starBorderDrawable)
                     ivStar5.setImageDrawable(starBorderDrawable)
                 }
-                3.0->{
+                3.0 -> {
                     ivStar1.setImageDrawable(starDrawable)
                     ivStar2.setImageDrawable(starDrawable)
                     ivStar3.setImageDrawable(starDrawable)
                     ivStar4.setImageDrawable(starBorderDrawable)
                     ivStar5.setImageDrawable(starBorderDrawable)
                 }
-                4.0->{
+                4.0 -> {
                     ivStar1.setImageDrawable(starDrawable)
                     ivStar2.setImageDrawable(starDrawable)
                     ivStar3.setImageDrawable(starDrawable)
                     ivStar4.setImageDrawable(starDrawable)
                     ivStar5.setImageDrawable(starBorderDrawable)
                 }
-                5.0->{
+                5.0 -> {
                     ivStar1.setImageDrawable(starDrawable)
                     ivStar2.setImageDrawable(starDrawable)
                     ivStar3.setImageDrawable(starDrawable)
@@ -64,7 +66,7 @@ class ReviewAdapter(private val items: ArrayList<Review>) :
                     ivStar5.setImageDrawable(starDrawable)
                 }
             }
-            tvReview.text=review.review
+            tvReview.text = review.review
         }
     }
 

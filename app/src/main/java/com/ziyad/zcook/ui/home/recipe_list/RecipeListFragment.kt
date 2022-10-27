@@ -43,76 +43,76 @@ class RecipeListFragment : Fragment() {
         binding.apply {
             homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { listSavedRecipeId ->
                 homeViewModel.allRecipe.observe(viewLifecycleOwner) { allRecipe ->
-                        rvAllRecipe.apply {
-                            adapter = RecipeAdapter(
-                                allRecipe, listSavedRecipeId, { recipe ->
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            RecipeDetailActivity::class.java
-                                        ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
-                                    )
-                                }, { recipe ->
-                                    homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) { user ->
-                                        if (user != null) {
-                                            if (listSavedRecipeId.contains(recipe.id)) {
-                                                lifecycleScope.launch(Dispatchers.IO) {
-                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
-                                                }
-                                            } else {
-                                                lifecycleScope.launch(Dispatchers.IO) {
-                                                    homeViewModel.saveRecipe(recipe.id)
-                                                }
+                    rvAllRecipe.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, listSavedRecipeId, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
+                                )
+                            }, { recipe ->
+                                homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) { user ->
+                                    if (user != null) {
+                                        if (listSavedRecipeId.contains(recipe.id)) {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                homeViewModel.removeRecipeFromSaved(recipe.id)
                                             }
                                         } else {
-                                            startActivity(
-                                                Intent(
-                                                    requireContext(),
-                                                    LoginActivity::class.java
-                                                )
-                                            )
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                homeViewModel.saveRecipe(recipe.id)
+                                            }
                                         }
+                                    } else {
+                                        startActivity(
+                                            Intent(
+                                                requireContext(),
+                                                LoginActivity::class.java
+                                            )
+                                        )
                                     }
-                                })
-                            setHasFixedSize(true)
-                        }
+                                }
+                            })
+                        setHasFixedSize(true)
                     }
+                }
 
                 homeViewModel.recipeBelow10.observe(viewLifecycleOwner) { allRecipe ->
-                        rvRecommendationBelow10.apply {
-                            adapter = RecipeAdapter(
-                                allRecipe, listSavedRecipeId, { recipe ->
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            RecipeDetailActivity::class.java
-                                        ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
-                                    )
-                                }, { recipe ->
-                                    homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) { user ->
-                                        if (user != null) {
-                                            if (listSavedRecipeId.contains(recipe.id)) {
-                                                lifecycleScope.launch(Dispatchers.IO) {
-                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
-                                                }
-                                            } else {
-                                                lifecycleScope.launch(Dispatchers.IO) {
-                                                    homeViewModel.saveRecipe(recipe.id)
-                                                }
+                    rvRecommendationBelow10.apply {
+                        adapter = RecipeAdapter(
+                            allRecipe, listSavedRecipeId, { recipe ->
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        RecipeDetailActivity::class.java
+                                    ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
+                                )
+                            }, { recipe ->
+                                homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) { user ->
+                                    if (user != null) {
+                                        if (listSavedRecipeId.contains(recipe.id)) {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                homeViewModel.removeRecipeFromSaved(recipe.id)
                                             }
                                         } else {
-                                            startActivity(
-                                                Intent(
-                                                    requireContext(),
-                                                    LoginActivity::class.java
-                                                )
-                                            )
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                homeViewModel.saveRecipe(recipe.id)
+                                            }
                                         }
+                                    } else {
+                                        startActivity(
+                                            Intent(
+                                                requireContext(),
+                                                LoginActivity::class.java
+                                            )
+                                        )
                                     }
-                                })
-                            setHasFixedSize(true)
-                        }
+                                }
+                            })
+                        setHasFixedSize(true)
                     }
+                }
 
                 homeViewModel.recipe10s.observe(viewLifecycleOwner) { allRecipe ->
 //                        Log.e("TEZZ",listSavedRecipeId.toString()+" --->"+allRecipe.toString())

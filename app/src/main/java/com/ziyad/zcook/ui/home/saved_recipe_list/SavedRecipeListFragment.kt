@@ -21,6 +21,7 @@ class SavedRecipeListFragment : Fragment() {
 
     private var _binding: FragmentSavedRecipeListBinding? = null
     private lateinit var homeViewModel: HomeViewModel
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -37,10 +38,10 @@ class SavedRecipeListFragment : Fragment() {
         val root: View = binding.root
         binding.apply {
             btnToLogin.setOnClickListener {
-                startActivity(Intent(requireContext(),LoginActivity::class.java))
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
-        homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
-            homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
+            homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
+                homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
                     rvSavedRecipe.apply {
                         adapter = RecipeAdapter(
                             savedRecipe, savedRecipeId, { recipe ->
@@ -66,19 +67,19 @@ class SavedRecipeListFragment : Fragment() {
                 }
             }
 
-        homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) {
-            if (it == null) {
-                rvSavedRecipe.visibility=View.GONE
-                btnToLogin.visibility = View.VISIBLE
-                tvName.text = requireContext().resources.getText(R.string.masuk_ke_akunmu)
-                tvEmail.text =
-                    requireContext().resources.getText(R.string.masuk_agar_dapat_simpan_resep_dan_review)
-            } else {
-                rvSavedRecipe.visibility=View.VISIBLE
-                btnToLogin.visibility = View.GONE
+            homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) {
+                if (it == null) {
+                    rvSavedRecipe.visibility = View.GONE
+                    btnToLogin.visibility = View.VISIBLE
+                    tvName.text = requireContext().resources.getText(R.string.masuk_ke_akunmu)
+                    tvEmail.text =
+                        requireContext().resources.getText(R.string.masuk_agar_dapat_simpan_resep_dan_review)
+                } else {
+                    rvSavedRecipe.visibility = View.VISIBLE
+                    btnToLogin.visibility = View.GONE
+                }
             }
         }
-    }
         return root
     }
 
@@ -113,6 +114,7 @@ class SavedRecipeListFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -27,5 +27,5 @@ class HomeViewModel : ViewModel() {
         userRepository.removeRecipeFromSaved(recipeId)
     }
 
-    suspend fun logout()=userRepository.logout()
+    suspend fun logout() = userRepository.logout()
 }

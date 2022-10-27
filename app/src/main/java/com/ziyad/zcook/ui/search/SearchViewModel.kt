@@ -17,12 +17,12 @@ class SearchViewModel : ViewModel() {
 
     val currentUserLiveData = userRepository.currentUserLiveData
 
-    fun searchRecipe(query: String) {
+    suspend fun searchRecipe(query: String) {
         recipeRepository.searchRecipe(query)
 //    recipeRepository.injectData()
     }
 
-    fun clearRecipe(){
+    suspend fun clearRecipe() {
         recipeRepository.clearSearch()
     }
 

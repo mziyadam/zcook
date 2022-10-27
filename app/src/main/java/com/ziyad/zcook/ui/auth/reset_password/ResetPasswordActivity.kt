@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class ResetPasswordActivity : AppCompatActivity() {
     private val resetPasswordViewModel: ResetPasswordViewModel by viewModels()
     private lateinit var binding: ActivityResetPasswordBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -42,7 +43,12 @@ class ResetPasswordActivity : AppCompatActivity() {
                                             "Success",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
+                                        startActivity(
+                                            Intent(
+                                                this@ResetPasswordActivity,
+                                                LoginActivity::class.java
+                                            )
+                                        )
                                         finish()
                                     }
                                     "LOADING" -> {

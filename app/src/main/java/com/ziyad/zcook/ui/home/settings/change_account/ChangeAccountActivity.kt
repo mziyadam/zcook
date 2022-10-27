@@ -40,10 +40,10 @@ class ChangeAccountActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        lifecycleScope.launch(Dispatchers.IO){
-                            val message=changeAccountViewModel.changeEmailAndName(email,name)
-                            lifecycleScope.launch(Dispatchers.Main){
-                                message.observe(this@ChangeAccountActivity){
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            val message = changeAccountViewModel.changeEmailAndName(email, name)
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                message.observe(this@ChangeAccountActivity) {
                                     when (it) {
                                         "SUCCESS" -> {
                                             Toast.makeText(
@@ -51,7 +51,7 @@ class ChangeAccountActivity : AppCompatActivity() {
                                                 "Success",
                                                 Toast.LENGTH_SHORT
                                             ).show()
-                                        finish()
+                                            finish()
                                         }
                                         "LOADING" -> {
                                             Toast.makeText(
@@ -60,7 +60,7 @@ class ChangeAccountActivity : AppCompatActivity() {
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         }
-                                        else->{
+                                        else -> {
                                             Toast.makeText(
                                                 this@ChangeAccountActivity,
                                                 it,

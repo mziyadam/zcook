@@ -21,7 +21,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     override fun onBackPressed() {
         super.onBackPressed()
-        searchViewModel.clearRecipe()
+        lifecycleScope.launch(Dispatchers.IO) {
+            searchViewModel.clearRecipe()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,23 +32,16 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.apply {
             btnBack.setOnClickListener {
-                searchViewModel.clearRecipe()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    searchViewModel.clearRecipe()
+                }
                 finish()
             }
             btnSearch.setOnClickListener {
-                rvSearchResult.visibility= View.GONE
-                searchViewModel.clearRecipe()
+                rvSearchResult.visibility = View.GONE
                 lifecycleScope.launch(Dispatchers.IO) {
+                    searchViewModel.clearRecipe()
                     searchViewModel.searchRecipe(etSearchQuery.text.toString())
-//                    // for input manager and initializing it.
-//                    val inputMethodManager =
-//                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//
-//                    // on below line hiding our keyboard.
-//                    inputMethodManager.hideSoftInputFromWindow(
-//                        this@SearchActivity.currentFocus?.windowToken,
-//                        0
-//                    )
                     startActivity(
                         Intent(
                             this@SearchActivity,

@@ -29,28 +29,6 @@ fun String.toCurrencyFormat(): String {
 fun CharSequence?.isValidEmail() =
     !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
-fun getCurrentDateTime(): Long {
-    return Calendar.getInstance().timeInMillis
-}
-
-fun convertMillisToString(timeMillis: Long): String {
-    val calendar = Calendar.getInstance()
-    calendar.timeInMillis = timeMillis
-    val sdf = SimpleDateFormat("dd MMM yyyy HH:mm z", Locale.getDefault())
-    return sdf.format(calendar.time)
-}
-
-fun sortMillisToDateDescending(dateList: ArrayList<Long>): ArrayList<String> {
-    val result = dateList.sortedByDescending {
-        it
-    }
-    val sortedDateList = arrayListOf<String>()
-    for (i in result) {
-        sortedDateList.add(convertMillisToString(i))
-    }
-    return sortedDateList
-}
-
 val recipeDummy = Recipe(
     "abcde",
     "Nasi Goreng Spesial",

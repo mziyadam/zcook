@@ -11,5 +11,5 @@ class RegisterViewModel : ViewModel() {
         email: String,
         name: String,
         password: String
-    )=userRepository.register(email, name, password)
+    ) = userRepository.register(email, name, password)
 }

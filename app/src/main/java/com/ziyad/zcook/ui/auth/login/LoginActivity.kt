@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
             btnLogin.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-                if (email == "" ||password == "" ) {
+                if (email == "" || password == "") {
                     Toast.makeText(
                         this@LoginActivity,
                         "Lengkapi data",
