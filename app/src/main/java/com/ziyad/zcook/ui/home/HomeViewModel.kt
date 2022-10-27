@@ -10,10 +10,14 @@ class HomeViewModel : ViewModel() {
     private val userRepository = UserRepository.getInstance()
 
     val allRecipe = recipeRepository.getAllRecipe()
+    val recipe10s = recipeRepository.getRecipe10s()
+    val recipeBelow10 = recipeRepository.getRecipeBelow10()
 
     val savedRecipe = userRepository.getSavedRecipe()
 
     val savedRecipeId = userRepository.getSavedRecipeId()
+
+    val currentUserLiveData = userRepository.currentUserLiveData
 
     suspend fun saveRecipe(recipeId: String) {
         userRepository.saveRecipe(recipeId)
@@ -22,4 +26,6 @@ class HomeViewModel : ViewModel() {
     suspend fun removeRecipeFromSaved(recipeId: String) {
         userRepository.removeRecipeFromSaved(recipeId)
     }
+
+    suspend fun logout()=userRepository.logout()
 }

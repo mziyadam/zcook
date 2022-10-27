@@ -1,11 +1,16 @@
 package com.ziyad.zcook.ui.detail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.ziyad.zcook.R
 import com.ziyad.zcook.databinding.ActivityRecipeDetailBinding
+import com.ziyad.zcook.ui.auth.login.LoginActivity
 import com.ziyad.zcook.utils.loadImage
 import com.ziyad.zcook.utils.toCurrencyFormat
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +25,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val recipeId = intent.getStringExtra(RECIPE_ID)
-        recipeDetailViewModel.currentRecipe(recipeId!!).observe(this) {mRecipe->
+        recipeDetailViewModel.currentRecipe(recipeId!!).observe(this) { mRecipe ->
             // Rating Count
             var rating = 0.0
             var reviewCount = 0
@@ -40,35 +45,122 @@ class RecipeDetailActivity : AppCompatActivity() {
                 tvListIngredientPrice.text = mRecipe.listIngredientPrice
                 tvSteps.text = mRecipe.steps
                 tvRecipeName.text = mRecipe.name
-                tvRating.text=rating.toString()
-            }
-            recipeDetailViewModel.savedRecipe.observe(this) { savedRecipe ->
-                binding.apply {
-                    // Drawables for save
-                    val saveDrawable =
-                        this@RecipeDetailActivity.resources.getDrawable(R.drawable.ic_bookmark)
-                    val saveBorderDrawable =
-                        this@RecipeDetailActivity.resources.getDrawable(R.drawable.ic_bookmark_border_white)
-                    if (savedRecipe.contains(mRecipe)) {
-                        btnSave.setImageDrawable(saveDrawable)
-                        btnSaveReview.setOnClickListener {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                recipeDetailViewModel.removeRecipeFromSaved(mRecipe.id)
-                            }
+                tvRating.text = rating.toString()
+                btnBack.setOnClickListener {
+                    finish()
+                }
+                recipeDetailViewModel.currentUserLiveData.observe(this@RecipeDetailActivity) {
+                    if (it == null) {
+                        btnToLogin.visibility = View.VISIBLE
+                        clLoggedIn.visibility = View.GONE
+                        btnToLogin.setOnClickListener {
+                            startActivity(
+                                Intent(
+                                    this@RecipeDetailActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
+                        }
+                        btnSave.setOnClickListener {
+                            startActivity(
+                                Intent(
+                                    this@RecipeDetailActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
                         }
                     } else {
-                        btnSave.setImageDrawable(saveBorderDrawable)
-                        btnSaveReview.setOnClickListener {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                recipeDetailViewModel.saveRecipe(mRecipe.id)
+                        btnToLogin.visibility = View.GONE
+                        clLoggedIn.visibility = View.VISIBLE
+                        ivStar1.setOnClickListener {
+                            setStar(1.0)
+                        }
+                        ivStar2.setOnClickListener {
+                            setStar(2.0)
+                        }
+                        ivStar3.setOnClickListener {
+                            setStar(3.0)
+                        }
+                        ivStar4.setOnClickListener {
+                            setStar(4.0)
+                        }
+                        ivStar5.setOnClickListener {
+                            setStar(5.0)
+                        }
+
+                        recipeDetailViewModel.savedRecipeId.observe(this@RecipeDetailActivity) { savedRecipeId ->
+                            // Drawables for save
+                            val saveDrawable =
+                                this@RecipeDetailActivity.resources.getDrawable(R.drawable.ic_bookmark)
+                            val saveBorderDrawable =
+                                this@RecipeDetailActivity.resources.getDrawable(R.drawable.ic_bookmark_border_white)
+                            Log.w("TEZZ", savedRecipeId.toString())
+                            if (savedRecipeId.contains(mRecipe.id)) {
+                                btnSave.setImageDrawable(saveDrawable)
+                                btnSave.setOnClickListener {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        recipeDetailViewModel.removeRecipeFromSaved(mRecipe.id)
+                                    }
+                                }
+                            } else {
+                                btnSave.setImageDrawable(saveBorderDrawable)
+                                btnSave.setOnClickListener {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        recipeDetailViewModel.saveRecipe(mRecipe.id)
+                                    }
+                                }
                             }
                         }
+
                     }
+
+
                 }
             }
         }
-        binding.btnBack.setOnClickListener {
-            finish()
+    }
+
+    private fun setStar(rating: Double) {
+        val starDrawable = resources.getDrawable(R.drawable.ic_sharp_star_24)
+        val starBorderDrawable = resources.getDrawable(R.drawable.ic_sharp_star_border_24)
+        binding.apply {
+            when (rating) {
+                1.0 -> {
+                    ivStar1.setImageDrawable(starDrawable)
+                    ivStar2.setImageDrawable(starBorderDrawable)
+                    ivStar3.setImageDrawable(starBorderDrawable)
+                    ivStar4.setImageDrawable(starBorderDrawable)
+                    ivStar5.setImageDrawable(starBorderDrawable)
+                }
+                2.0 -> {
+                    ivStar1.setImageDrawable(starDrawable)
+                    ivStar2.setImageDrawable(starDrawable)
+                    ivStar3.setImageDrawable(starBorderDrawable)
+                    ivStar4.setImageDrawable(starBorderDrawable)
+                    ivStar5.setImageDrawable(starBorderDrawable)
+                }
+                3.0 -> {
+                    ivStar1.setImageDrawable(starDrawable)
+                    ivStar2.setImageDrawable(starDrawable)
+                    ivStar3.setImageDrawable(starDrawable)
+                    ivStar4.setImageDrawable(starBorderDrawable)
+                    ivStar5.setImageDrawable(starBorderDrawable)
+                }
+                4.0 -> {
+                    ivStar1.setImageDrawable(starDrawable)
+                    ivStar2.setImageDrawable(starDrawable)
+                    ivStar3.setImageDrawable(starDrawable)
+                    ivStar4.setImageDrawable(starDrawable)
+                    ivStar5.setImageDrawable(starBorderDrawable)
+                }
+                5.0 -> {
+                    ivStar1.setImageDrawable(starDrawable)
+                    ivStar2.setImageDrawable(starDrawable)
+                    ivStar3.setImageDrawable(starDrawable)
+                    ivStar4.setImageDrawable(starDrawable)
+                    ivStar5.setImageDrawable(starDrawable)
+                }
+            }
         }
     }
 

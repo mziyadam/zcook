@@ -15,6 +15,8 @@ class SearchViewModel : ViewModel() {
 
     val savedRecipeId = userRepository.getSavedRecipeId()
 
+    val currentUserLiveData = userRepository.currentUserLiveData
+
     fun searchRecipe(query: String) {
         recipeRepository.searchRecipe(query)
 //    recipeRepository.injectData()

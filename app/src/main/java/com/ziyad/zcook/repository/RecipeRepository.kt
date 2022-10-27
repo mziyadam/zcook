@@ -43,7 +43,6 @@ class RecipeRepository {
     }
 
     fun getAllRecipe(): MutableLiveData<ArrayList<Recipe>> {
-        val allRecipe = arrayListOf<Recipe>()
         database.collection("recipes").addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("TEZ", "Listen failed.", e)
@@ -51,15 +50,16 @@ class RecipeRepository {
             }
 
             if (snapshot != null && !snapshot.isEmpty) {
+                val allRecipe = arrayListOf<Recipe>()
                 for (doc in snapshot) {
                     allRecipe.add(doc.toObject(Recipe::class.java))
                     Log.d("TEZ", "Current data: $doc")
                 }
+                allRecipeLiveData.postValue(allRecipe)
             } else {
                 Log.d("TEZ", "Current data: null")
             }
         }
-        allRecipeLiveData.postValue(allRecipe)
 
         return allRecipeLiveData
     }
@@ -67,55 +67,63 @@ class RecipeRepository {
     private val _searchResult = MutableLiveData<ArrayList<Recipe>>()
     val searchResult: LiveData<ArrayList<Recipe>> = _searchResult
     fun searchRecipe(query: String) {
-        val allRecipe = arrayListOf<Recipe>()
-        database.collection("recipes")
-            .orderBy("name")
-            .startAt(query)
-            .endAt(query + '\uf8ff')
-            .addSnapshotListener { snapshot, e ->
+        database.collection("recipes").addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("TEZ", "Listen failed.", e)
                 return@addSnapshotListener
             }
 
             if (snapshot != null && !snapshot.isEmpty) {
+                val allRecipe = arrayListOf<Recipe>()
                 for (doc in snapshot) {
-                    allRecipe.add(doc.toObject(Recipe::class.java))
-//                    Log.d("TEZ", "Current data: $doc")
+                    val mRecipe=doc.toObject(Recipe::class.java)
+                    if(mRecipe.name.lowercase().contains(query.lowercase())){
+                        allRecipe.add(mRecipe)
+                    }
+                    Log.d("TEZ", "Current data: $doc")
                 }
+                _searchResult.postValue(allRecipe)
             } else {
                 Log.d("TEZ", "Current data: null")
             }
         }
-
-        _searchResult.postValue(allRecipe)
     }
 
     fun clearSearch(){
         _searchResult.postValue(arrayListOf())
     }
 
-    fun getAllRecipeByPriceRange(
+    private fun getAllRecipeByPriceRange(
         startPrice: Int,
         endPrice: Int
-    ): ArrayList<Recipe> {
-        val allRecipe = arrayListOf<Recipe>()
-        //TODO NOT YET IMPLEMENTED
+    ): MutableLiveData<ArrayList<Recipe>> {
+        val allRecipeInRange = MutableLiveData<ArrayList<Recipe>>()
+        allRecipeInRange.postValue(arrayListOf())
+        database.collection("recipes").whereGreaterThanOrEqualTo("estimatedPrice", startPrice)
+            .whereLessThanOrEqualTo("estimatedPrice", endPrice).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("TEZ", "Listen failed.", e)
+                return@addSnapshotListener
+            }
 
-        return allRecipe
+            if (snapshot != null && !snapshot.isEmpty) {
+                val allRecipe = arrayListOf<Recipe>()
+                for (doc in snapshot) {
+                    allRecipe.add(doc.toObject(Recipe::class.java))
+                    Log.d("TEZ", "Current data: $doc")
+                }
+                allRecipeInRange.postValue(allRecipe)
+            } else {
+                Log.d("TEZ", "Current data: null")
+            }
+        }
+
+        return allRecipeInRange
     }
 
-    fun getRecipeBelow10(): MutableLiveData<ArrayList<Recipe>> {
-        recipeBelow10LiveData.postValue(getAllRecipeByPriceRange(0, 10000))
+    fun getRecipeBelow10()=getAllRecipeByPriceRange(0, 9999)
 
-        return recipeBelow10LiveData
-    }
-
-    fun getRecipe10s(): MutableLiveData<ArrayList<Recipe>> {
-        recipe10sLiveData.postValue(getAllRecipeByPriceRange(10000, 19999))
-
-        return recipe10sLiveData
-    }
+    fun getRecipe10s()=getAllRecipeByPriceRange(10000,19999)
 
     suspend fun addRatingAndReview(rating: Double, review: String) {
         //TODO NOT YET IMPLEMENTED

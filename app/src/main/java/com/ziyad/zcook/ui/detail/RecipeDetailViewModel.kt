@@ -12,7 +12,8 @@ class RecipeDetailViewModel: ViewModel() {
     private val recipeRepository = RecipeRepository.getInstance()
     private val userRepository = UserRepository.getInstance()
 
-    val savedRecipe = userRepository.getSavedRecipe()
+    val savedRecipeId = userRepository.getSavedRecipeId()
+    val currentUserLiveData = userRepository.currentUserLiveData
 
     fun currentRecipe(recipeId:String)=recipeRepository.getRecipe(recipeId)
 

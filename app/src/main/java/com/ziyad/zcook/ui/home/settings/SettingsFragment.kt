@@ -6,10 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.ziyad.zcook.R
 import com.ziyad.zcook.databinding.FragmentSettingsBinding
 import com.ziyad.zcook.ui.auth.login.LoginActivity
+import com.ziyad.zcook.ui.home.HomeActivity
+import com.ziyad.zcook.ui.home.HomeViewModel
+import com.ziyad.zcook.ui.home.settings.change_account.ChangeAccountActivity
+import com.ziyad.zcook.ui.home.settings.change_password.ChangePasswordActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
 
@@ -24,16 +33,76 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.btnToLogin.setOnClickListener {
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        binding.apply {
+            btnToLogin.setOnClickListener {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+            }
+            btnToChangeAccount.setOnClickListener {
+                startActivity(Intent(requireContext(),ChangeAccountActivity::class.java))
+            }
+            btnToChangePassword.setOnClickListener {
+                startActivity(Intent(requireContext(),ChangePasswordActivity::class.java))
+            }
+            btnLogout.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO){
+                    val message=homeViewModel.logout()
+                    lifecycleScope.launch(Dispatchers.Main){
+                        message.observe(requireActivity()){
+                            when (it) {
+                                "SUCCESS" -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Success",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    startActivity(Intent(requireContext(),HomeActivity::class.java))
+                                    requireActivity().finish()
+                                }
+                                "LOADING" -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Loading",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                else->{
+                                    Toast.makeText(
+                                        requireContext(),
+                                        it,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            homeViewModel.currentUserLiveData.observe(requireActivity()){
+                if(it==null){
+                    btnToLogin.isClickable=true
+                    btnLogout.visibility=View.GONE
+                    btnToChangeAccount.visibility=View.GONE
+                    btnToChangePassword.visibility=View.GONE
+                    tvName.text=requireContext().resources.getText(R.string.masuk_ke_akunmu)
+                    tvEmail.text=requireContext().resources.getText(R.string.masuk_agar_dapat_simpan_resep_dan_review)
+                }else{
+                    btnToLogin.isClickable=false
+                    btnLogout.visibility=View.VISIBLE
+                    btnToChangeAccount.visibility=View.VISIBLE
+                    btnToChangePassword.visibility=View.VISIBLE
+                    tvName.text=it.displayName
+                    tvEmail.text=it.email
+                }
+            }
         }
 //        val textView: TextView = binding.textNotifications
-//        settingsViewModel.text.observe(viewLifecycleOwner) {
+//        settingsViewModel.text.observe(requireActivity()) {
 //            textView.text = it
 //        }
         return root

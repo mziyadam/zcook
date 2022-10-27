@@ -21,6 +21,8 @@ class UserRepository {
     private val database = FirebaseFirestore.getInstance()
     private val _currentUserLiveData = MutableLiveData<FirebaseUser>()
     val currentUserLiveData: LiveData<FirebaseUser> = _currentUserLiveData
+
+    //    val currentUser: FirebaseUser? = auth.currentUser
     private val savedRecipe = MutableLiveData<ArrayList<Recipe>>()
     private val savedRecipeId = MutableLiveData<ArrayList<String>>()
     private val currentMahasiswaKos = MutableLiveData<MahasiswaKos>()
@@ -32,8 +34,8 @@ class UserRepository {
         currentMahasiswaKos.value = MahasiswaKos()
     }
 
-    suspend fun login(email: String, password: String):MutableLiveData<String> {
-        val message=MutableLiveData<String>()
+    suspend fun login(email: String, password: String): MutableLiveData<String> {
+        val message = MutableLiveData<String>()
         message.postValue("LOADING")
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -43,7 +45,7 @@ class UserRepository {
                     _currentUserLiveData.value = auth.currentUser
                     message.postValue("SUCCESS")
                 } else {
-                   Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
                     message.postValue(task.exception.toString())
                 }
             }
@@ -54,8 +56,8 @@ class UserRepository {
         email: String,
         name: String,
         password: String
-    ):MutableLiveData<String> {
-        val message=MutableLiveData<String>()
+    ): MutableLiveData<String> {
+        val message = MutableLiveData<String>()
         message.postValue("LOADING")
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -100,22 +102,23 @@ class UserRepository {
         return message
     }
 
-    fun getCurrentMahasiswaKos():MutableLiveData<MahasiswaKos>{
+    fun getCurrentMahasiswaKos(): MutableLiveData<MahasiswaKos> {
         val mCurrentUser = auth.currentUser
-        database.collection("mahasiswa_kos").document(mCurrentUser!!.uid).addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("TEZ", "Listen failed.", e)
-                return@addSnapshotListener
-            }
+        database.collection("mahasiswa_kos").document(mCurrentUser!!.uid)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w("TEZ", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
 
-            if (snapshot != null && snapshot.exists()) {
-                val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
-                Log.d("TEZ", "Current data: $mahasiswaKos")
-                currentMahasiswaKos.postValue(mahasiswaKos)
-            } else {
-                Log.d("TEZ", "Current data: null")
+                if (snapshot != null && snapshot.exists()) {
+                    val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)!!
+                    Log.d("TEZ", "Current data: $mahasiswaKos")
+                    currentMahasiswaKos.postValue(mahasiswaKos)
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                }
             }
-        }
         return currentMahasiswaKos
     }
 
@@ -140,82 +143,145 @@ class UserRepository {
         message.postValue("LOADING")
         try {
             auth.signOut()
+            _currentUserLiveData.postValue(auth.currentUser)
             message.postValue("SUCCESS")
-        }catch (e:Exception){
+        } catch (e: Exception) {
             message.postValue(e.toString())
         }
         return message
     }
 
     fun getSavedRecipeId(): MutableLiveData<ArrayList<String>> {
-        val allRecipeId = arrayListOf<String>()
+        val currentUser = auth.currentUser
         //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
-        for (i in 1..10) {
-            allRecipeId.add(recipeDummy.id)
-        }
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(it.uid)
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        Log.w("TEZ", "Listen failed.", e)
+                        return@addSnapshotListener
+                    }
 
-//        database.collection("recipes").addSnapshotListener { snapshot, e ->
-//            if (e != null) {
-//                Log.w("TEZ", "Listen failed.", e)
-//                return@addSnapshotListener
-//            }
-//
-//            if (snapshot != null && !snapshot.isEmpty) {
-//                for (doc in snapshot) {
-//                    val mRecipe=doc.toObject(Recipe::class.java)
-//                    if(allRecipeId.contains(mRecipe.id)){
-//                        allRecipe.add(mRecipe)
-//                    }
-//                    Log.d("TEZ", "Current data: $doc")
-//                }
-//            } else {
-//                Log.d("TEZ", "Current data: null")
-//            }
-//        }
-        savedRecipeId.postValue(allRecipeId)
+                    if (snapshot != null && snapshot.exists()) {
+                        val allRecipeId = arrayListOf<String>()
+                        val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
+                        Log.d(TAG, "DocumentSnapshot data: ${snapshot.data}")
+                        for (i in mahasiswaKos!!.listSavedRecipeId) {
+                            allRecipeId.add(i)
+                        }
+                        Log.d("TEZZ", "Current data: $allRecipeId")
+                        savedRecipeId.postValue(allRecipeId)
+                    } else {
+                        Log.d("TEZ", "Current data: null")
+                    }
+                }
+        }
 
         return savedRecipeId
     }
 
     fun getSavedRecipe(): MutableLiveData<ArrayList<Recipe>> {
-        val allRecipe = arrayListOf<Recipe>()
-        val allRecipeId = arrayListOf<String>()
+        val currentUser = auth.currentUser
         //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
-        for (i in 1..10) {
-            allRecipeId.add(recipeDummy.id)
-        }
-
-        database.collection("recipes").addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("TEZ", "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (doc in snapshot) {
-                    val mRecipe = doc.toObject(Recipe::class.java)
-                    if (allRecipeId.contains(mRecipe.id)) {
-                        allRecipe.add(mRecipe)
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(it.uid)
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        Log.w("TEZ", "Listen failed.", e)
+                        return@addSnapshotListener
                     }
-                    Log.d("TEZ", "Current data: $doc")
+
+                    if (snapshot != null && snapshot.exists()) {
+                        val mahasiswaKos = snapshot.toObject(MahasiswaKos::class.java)
+                        val allRecipe = arrayListOf<Recipe>()
+                        val allRecipeId = arrayListOf<String>()
+                        Log.d(TAG, "DocumentSnapshot data: ${snapshot.data}")
+                        for (i in mahasiswaKos!!.listSavedRecipeId) {
+                            allRecipeId.add(i)
+                        }
+//                        Log.d("TEZZ", "Current data: $allRecipeId")
+                        database.collection("recipes")
+                            .addSnapshotListener { mSnapshot, mE ->
+                                if (mE != null) {
+                                    Log.w("TEZ", "Listen failed.", mE)
+                                    return@addSnapshotListener
+                                }
+
+                                if (mSnapshot != null && !mSnapshot.isEmpty) {
+                                    for (doc in mSnapshot) {
+                                        val mRecipe = doc.toObject(Recipe::class.java)
+                                        if (allRecipeId.contains(mRecipe.id)) {
+                                            allRecipe.add(mRecipe)
+                                            Log.d("TEZ", "Current data: $doc")
+                                        }
+                                    }
+                                    savedRecipe.postValue(allRecipe)
+                                } else {
+                                    Log.d("TEZ", "Current data: null")
+                                }
+                            }
+                    } else {
+                        Log.d("TEZ", "Current data: null")
+                    }
                 }
-            } else {
-                Log.d("TEZ", "Current data: null")
-            }
         }
-        savedRecipe.postValue(allRecipe)
+
 
         return savedRecipe
     }
 
     suspend fun saveRecipe(recipeId: String) {
         //TODO NOT YET IMPLEMENTED
-
+        val currentUser = auth.currentUser
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(it.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val mahasiswaKos = document.toObject(MahasiswaKos::class.java)
+                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                        mahasiswaKos?.listSavedRecipeId?.add(recipeId)
+                        database.collection("mahasiswa_kos").document(currentUser!!.uid)
+                            .set(mahasiswaKos!!).addOnSuccessListener {
+                                Log.d("TEZ", "Current data: $it")
+                                savedRecipeId.postValue(mahasiswaKos.listSavedRecipeId)
+                            }.addOnFailureListener {
+                                Log.d("TEZ", "Current data: $it")
+                            }
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+        }
     }
 
     suspend fun removeRecipeFromSaved(recipeId: String) {
         //TODO NOT YET IMPLEMENTED
-
+        val currentUser = auth.currentUser
+        currentUser?.let {
+            database.collection("mahasiswa_kos").document(it.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val mahasiswaKos = document.toObject(MahasiswaKos::class.java)
+                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                        mahasiswaKos?.listSavedRecipeId?.remove(recipeId)
+                        database.collection("mahasiswa_kos").document(currentUser!!.uid)
+                            .set(mahasiswaKos!!).addOnSuccessListener {
+                                Log.d("TEZ", "Current data: $it")
+                                savedRecipeId.postValue(mahasiswaKos.listSavedRecipeId)
+                            }.addOnFailureListener {
+                                Log.d("TEZ", "Current data: $it")
+                            }
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+        }
     }
 
     suspend fun changeEmailAndName(email: String, name: String): MutableLiveData<String> {

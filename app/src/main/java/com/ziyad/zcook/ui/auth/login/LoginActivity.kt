@@ -29,30 +29,39 @@ class LoginActivity : AppCompatActivity() {
             btnLogin.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val message = loginViewModel.login(email, password)
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        message.observe(this@LoginActivity) {
-                            when (it) {
-                                "SUCCESS" -> {
-                                    Toast.makeText(
-                                        this@LoginActivity,
-                                        "Success",
-                                        Toast.LENGTH_SHORT
-                                    ).show()}
-                                "LOADING" -> {
-                                    Toast.makeText(
-                                        this@LoginActivity,
-                                        "Loading",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                                else->{
-                                    Toast.makeText(
-                                        this@LoginActivity,
-                                        it,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                if (email == "" ||password == "" ) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Lengkapi data",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val message = loginViewModel.login(email, password)
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            message.observe(this@LoginActivity) {
+                                when (it) {
+                                    "SUCCESS" -> {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "Success",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    "LOADING" -> {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "Loading",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    else -> {
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            it,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             }
                         }

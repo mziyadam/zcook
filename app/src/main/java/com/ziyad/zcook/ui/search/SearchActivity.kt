@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.ziyad.zcook.databinding.ActivitySearchBinding
 import com.ziyad.zcook.ui.adapter.RecipeAdapter
+import com.ziyad.zcook.ui.auth.login.LoginActivity
 import com.ziyad.zcook.ui.detail.RecipeDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,12 +44,17 @@ class SearchActivity : AppCompatActivity() {
 //                        this@SearchActivity.currentFocus?.windowToken,
 //                        0
 //                    )
-                    startActivity(Intent(this@SearchActivity, SearchActivity::class.java).putExtra("query",etSearchQuery.text.toString()))
+                    startActivity(
+                        Intent(
+                            this@SearchActivity,
+                            SearchActivity::class.java
+                        ).putExtra("query", etSearchQuery.text.toString())
+                    )
                     finish()
                 }
             }
-            val mQuery=intent.getStringExtra("query")
-            if(mQuery!=null){
+            val mQuery = intent.getStringExtra("query")
+            if (mQuery != null) {
                 binding.etSearchQuery.setText(mQuery)
             }
             searchViewModel.savedRecipeId.observe(this@SearchActivity) { savedRecipeId ->
@@ -63,13 +70,24 @@ class SearchActivity : AppCompatActivity() {
                                     ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                if (savedRecipeId.contains(recipe.id)) {
-                                    lifecycleScope.launch(Dispatchers.IO) {
-                                        searchViewModel.removeRecipeFromSaved(recipe.id)
-                                    }
-                                } else {
-                                    lifecycleScope.launch(Dispatchers.IO) {
-                                        searchViewModel.saveRecipe(recipe.id)
+                                searchViewModel.currentUserLiveData.observe(this@SearchActivity) { user ->
+                                    if (user != null) {
+                                        if (savedRecipeId.contains(recipe.id)) {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                searchViewModel.removeRecipeFromSaved(recipe.id)
+                                            }
+                                        } else {
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                searchViewModel.saveRecipe(recipe.id)
+                                            }
+                                        }
+                                    } else {
+                                        startActivity(
+                                            Intent(
+                                                this@SearchActivity,
+                                                LoginActivity::class.java
+                                            )
+                                        )
                                     }
                                 }
                             })

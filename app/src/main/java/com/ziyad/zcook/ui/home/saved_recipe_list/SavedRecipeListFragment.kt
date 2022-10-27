@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.ziyad.zcook.R
 import com.ziyad.zcook.databinding.FragmentSavedRecipeListBinding
 import com.ziyad.zcook.ui.adapter.RecipeAdapter
+import com.ziyad.zcook.ui.auth.login.LoginActivity
 import com.ziyad.zcook.ui.detail.RecipeDetailActivity
 import com.ziyad.zcook.ui.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +35,12 @@ class SavedRecipeListFragment : Fragment() {
 
         _binding = FragmentSavedRecipeListBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.apply {
+            btnToLogin.setOnClickListener {
+                startActivity(Intent(requireContext(),LoginActivity::class.java))
+            }
         homeViewModel.savedRecipe.observe(viewLifecycleOwner) { savedRecipe ->
             homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
-                binding.apply {
                     rvSavedRecipe.apply {
                         adapter = RecipeAdapter(
                             savedRecipe, savedRecipeId, { recipe ->
@@ -46,19 +51,34 @@ class SavedRecipeListFragment : Fragment() {
                                     ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
                                 )
                             }, { recipe ->
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    homeViewModel.saveRecipe(recipe.id)
+                                if (savedRecipeId.contains(recipe.id)) {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.removeRecipeFromSaved(recipe.id)
+                                    }
+                                } else {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        homeViewModel.saveRecipe(recipe.id)
+                                    }
                                 }
                             })
                         setHasFixedSize(true)
                     }
                 }
             }
+
+        homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                rvSavedRecipe.visibility=View.GONE
+                btnToLogin.visibility = View.VISIBLE
+                tvName.text = requireContext().resources.getText(R.string.masuk_ke_akunmu)
+                tvEmail.text =
+                    requireContext().resources.getText(R.string.masuk_agar_dapat_simpan_resep_dan_review)
+            } else {
+                rvSavedRecipe.visibility=View.VISIBLE
+                btnToLogin.visibility = View.GONE
+            }
         }
-        /*val textView: TextView = binding.textDashboard
-        savedRecipeListViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }*/
+    }
         return root
     }
 

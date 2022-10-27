@@ -119,7 +119,6 @@
             android:id="@+id/rv_all_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/inter_component_margin_normal"
             android:layout_marginTop="@dimen/inter_component_margin_normal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

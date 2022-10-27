@@ -213,7 +213,7 @@
                 android:id="@+id/cl_logged_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                >
 
                 <TextView
                     android:id="@+id/tv_personal_note_label"
@@ -254,13 +254,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_personal_note" />
 
                 <TextView
-                    android:id="@+id/tv_personal_note_label2"
+                    android:id="@+id/tv_add_review_label"
                     style="@style/Heading2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/inter_component_margin_medium"
                     android:layout_marginTop="@dimen/inter_component_margin_small"
-                    android:text="@string/catatan_pribadi"
+                    android:text="@string/review_resep_ini"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_save_note" />
 
@@ -269,8 +269,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/inter_component_margin_normal"
-                    app:layout_constraintStart_toStartOf="@+id/tv_personal_note_label2"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_personal_note_label2"
+                    app:layout_constraintStart_toStartOf="@+id/tv_add_review_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_add_review_label"
                     app:srcCompat="@drawable/ic_sharp_star_border_24" />
 
                 <ImageView

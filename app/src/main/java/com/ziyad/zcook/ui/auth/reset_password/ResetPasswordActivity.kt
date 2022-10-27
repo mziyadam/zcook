@@ -22,8 +22,8 @@ class ResetPasswordActivity : AppCompatActivity() {
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.apply {
-            val email = etEmail.text.toString()
             btnSendEmail.setOnClickListener {
+                val email = etEmail.text.toString()
                 if (email == "" || !email.isValidEmail()) {
                     Toast.makeText(
                         this@ResetPasswordActivity,
@@ -41,7 +41,10 @@ class ResetPasswordActivity : AppCompatActivity() {
                                             this@ResetPasswordActivity,
                                             "Success",
                                             Toast.LENGTH_SHORT
-                                        ).show()}
+                                        ).show()
+                                        startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
+                                        finish()
+                                    }
                                     "LOADING" -> {
                                         Toast.makeText(
                                             this@ResetPasswordActivity,
@@ -60,8 +63,6 @@ class ResetPasswordActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
-                    finish()
                 }
             }
             btnBack.setOnClickListener {
