@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.ziyad.zcook.model.MahasiswaKos
-import com.ziyad.zcook.model.PersonalNote
 import com.ziyad.zcook.model.Recipe
 import com.ziyad.zcook.model.Review
-import com.ziyad.zcook.utils.recipeDummy
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -174,7 +171,7 @@ class RecipeRepository {
 
     suspend fun injectData() {
         val randomId = UUID.randomUUID().toString()
-        val mRecipe = Recipe(
+        /*val recipeNasiGoreng = Recipe(
             randomId,
             "Nasi Goreng Spesial",
             "https://img.okezone.com/content/2022/08/11/298/2646282/resep-nasi-goreng-rendah-kalori-cocok-untuk-diet-D8kxJ8GTcT.jpg",
@@ -209,15 +206,97 @@ class RecipeRepository {
                     "5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n" +
                     "6. Nasi goreng biasa yang sederhana, dan enak siap disajikan.",
             arrayListOf()
-        )
-        database.collection("recipes")
+        )*/
+        /*val recipeFrenchFries = Recipe(
+            randomId,
+            "Kentang Goreng Restoran",
+            "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/french-fries.jpg?alt=media&token=a3f315ec-fa85-43cc-99e0-3fd13e3e7639",
+            18000,
+            "75 menit",
+            "-Kentang 8 buah \n" +
+                    "-Gula putih 3 sdm  \n" +
+                    "-Sirup jagung 2 sdm",
+            "± Rp 12.000 (1kg)\n" +
+                    "± Rp 1.000 (24gr)\n" +
+                    "± Rp 5.000 (100ml)",
+            "1. Kupas dan potong kentang menjadi potongan kentang goreng setebal 1/4 inci\n" +
+                    "2. Siapkan mangkuk untuk kentang dan biarkan terendam dalam air selama 15 menit, lalu keluarkan cairannya dan keringkan kentang.\n" +
+                    "3. Sekarang rendam kentang dalam air mendidih secukupnya lalu tambahkan sirup jagung dan gula dan aduk semuanya. Lakukan ini dalam mangkuk logam. Masukkan semuanya ke dalam lemari es selama 10 menit. Keluarkan cairan dan keringkan kentang dengan tisu.\n" +
+                    "4. Siapkan kotak makan dan taruh kentang goreng di atasnya, letakkan plastik penutup di atas piring dan masukkan semuanya ke dalam freezer selama 45 menit.\n" +
+                    "5. Sekarang panaskan minyak untuk menggoreng sekitar 350 hingga 360 derajat dan setelah minyak panas mulai 1,3 kentang goreng dalam minyak selama 3 menit. Tempatkan kentang goreng di atas piring dengan handuk kertas untuk dikeringkan dan biarkan selama sekitar 10 menit. Terus bekerja dalam batch sampai semua kentang goreng selesai.\n" +
+                    "6. Sekarang goreng kembali kentang goreng untuk kedua kalinya 1/3 setiap kali selama 6 menit setiap batch kemudian bumbui kentang goreng dengan sedikit garam.\n" +
+                    "7. Nikmati.",
+            arrayListOf()
+        )*/
+        /*val recipePearSalad = Recipe(
+            randomId,
+            "Salad Buah Pir",
+            "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/pear-salad.jpg?alt=media&token=b5e47622-093c-4c91-9a55-337eb0cd46db",
+            12000,
+            "3 menit",
+            "-Daun selada 1 lembar \n" +
+                    "-Buah pir 1 buah  \n" +
+                    "-Mayones 1 sdm \n" +
+                    "-Paprika bubuk ",
+            "± Rp 3.000 (100gr) \n" +
+                    "± Rp 3.000 \n" +
+                    "± Rp 1.000 (10gr)\n" +
+                    "± Rp 5.000 (20gr)" ,
+            "1. Potong buah pir\n" +
+                    "2. Susun daun selada di piring saji, diikuti dengan buah pir dan mayones. \n" +
+                    "3. Nikmati dengan taburan paprika.",
+            arrayListOf()
+        )*/
+        /*val recipe2DollarsSandwich = Recipe(
+            randomId,
+            "$2 Sandwich",
+            "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/2dollar-sandwhich.jpg?alt=media&token=a12ce24e-0075-46b9-b6ad-3b13ff031d17",
+            9500,
+            "5 menit",
+            "-Margarin 2 sdt \n" +
+                    "-Roti tawar 2 potong  \n" +
+                    "-Gula putih 2 sdt",
+            "± Rp 5.000 (200gr) \n" +
+                    "± Rp 4.000\n" +
+                    "± Rp 500 (16gr)" ,
+            "1. Oleskan margarin pada kedua irisan roti secara merata dan taburi dengan gula.\n" +
+                    "2. Nikmati.",
+            arrayListOf()
+        )*/
+        /*val recipeILPancakes = Recipe(
+            randomId,
+            "I ♥ Pancakes\n",
+            "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/il-pancakes.jpg?alt=media&token=0a128097-8206-4aa5-88a3-0f7209b41b69",
+            10000,
+            "5 menit",
+            "-Tepung beras 1 cup \n" +
+                    "-Garam 1/2 sdt \n" +
+                    "-Telur 1 butir \n" +
+                    "-Minyak goreng 1 sdm \n" +
+                    "-Air 1 sdm",
+            "± Rp 6.000 (500gr) \n" +
+                    "± Rp 1.000 (100gr)\n" +
+                    "± Rp 2.000\n" +
+                    "± Rp 500 (1 sdm)\n" +
+                    "± Rp 500 (1 gelas)" ,
+            "1. Dalam mangkuk, campur tepung beras dan garam. \n" +
+                    "2. Buat lubang di tengah campuran tepung. \n" +
+                    "3. Tambahkan telur yang telah dikocok, minyak sayur dan air secukupnya ke dalam mangkuk dan aduk hingga adonan tercampur. \n" +
+                    "4. Olesi wajan anti lengket dengan minyak goreng dan panaskan dengan api sedang. \n" +
+                    "5. Tambahkan sekitar 1/4 cup dari campuran dan miringkan panci untuk menutupi bagian bawah dengan panekuk tipis. \n" +
+                    "6. Masak sekitar 1 menit per sisi. \n" +
+                    "7. Ulangi dengan sisa campuran.",
+            arrayListOf()
+        )*/
+        //TODO ADD RECIPE
+    /*database.collection("recipes")
             .document(randomId)
-            .set(mRecipe)
+            .set(recipePearSalad)
             .addOnCompleteListener {
                 Log.w("TEZ", "added $it")
             }.addOnFailureListener {
                 Log.w("TEZ", "Error $it")
-            }
+            }*/
     }
 
     companion object {
