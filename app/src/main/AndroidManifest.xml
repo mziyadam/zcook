@@ -33,9 +33,6 @@
             android:name=".ui.detail.RecipeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.search.SearchActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true"
             android:label="@string/app_name">

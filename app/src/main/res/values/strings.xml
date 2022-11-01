@@ -2,6 +2,7 @@
     <string name="app_name">zcook</string>
     <string name="title_recipe_list">Recipe List</string>
     <string name="title_saved_recipe_list">Saved Recipe List</string>
+    <string name="title_search_recipe">Search Recipe</string>
     <string name="title_settings">Settings</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -39,4 +40,6 @@
     <string name="rekomendasi_resep_10ribuan">Rekomendasi resep 10ribuan</string>
     <string name="semua_resep">Semua resep</string>
     <string name="review_resep_ini">Review resep ini!</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

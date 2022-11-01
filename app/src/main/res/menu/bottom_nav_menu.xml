@@ -7,6 +7,11 @@
         android:title="@string/title_recipe_list" />
 
     <item
+        android:id="@+id/navigation_search_recipe"
+        android:icon="@drawable/ic_sharp_search_24"
+        android:title="@string/title_search_recipe" />
+
+    <item
         android:id="@+id/navigation_saved_recipe_list"
         android:icon="@drawable/ic_sharp_bookmark_border_24"
         android:title="@string/title_saved_recipe_list" />

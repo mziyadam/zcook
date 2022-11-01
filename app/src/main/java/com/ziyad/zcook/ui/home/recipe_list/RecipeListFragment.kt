@@ -17,7 +17,6 @@ import com.ziyad.zcook.ui.adapter.RecipeAdapter
 import com.ziyad.zcook.ui.auth.login.LoginActivity
 import com.ziyad.zcook.ui.detail.RecipeDetailActivity
 import com.ziyad.zcook.ui.home.HomeViewModel
-import com.ziyad.zcook.ui.search.SearchActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -152,46 +151,8 @@ class RecipeListFragment : Fragment() {
                 }
             }
         }
-        binding.btnSearch.setOnClickListener {
-            startActivity(Intent(requireContext(), SearchActivity::class.java))
-        }
         return root
     }
-
-    private fun getAdapter(
-        allRecipe: ArrayList<Recipe>,
-        listSavedRecipeId: ArrayList<String>,
-        homeViewModel: HomeViewModel
-    ) = RecipeAdapter(
-        allRecipe, listSavedRecipeId, { recipe ->
-            startActivity(
-                Intent(
-                    requireContext(),
-                    RecipeDetailActivity::class.java
-                ).putExtra(RecipeDetailActivity.RECIPE_ID, recipe.id)
-            )
-        }, { recipe ->
-            homeViewModel.currentUserLiveData.observe(viewLifecycleOwner) { user ->
-                if (user != null) {
-                    if (listSavedRecipeId.contains(recipe.id)) {
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            homeViewModel.removeRecipeFromSaved(recipe.id)
-                        }
-                    } else {
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            homeViewModel.saveRecipe(recipe.id)
-                        }
-                    }
-                } else {
-                    startActivity(
-                        Intent(
-                            requireContext(),
-                            LoginActivity::class.java
-                        )
-                    )
-                }
-            }
-        })
 
     override fun onDestroyView() {
         super.onDestroyView()

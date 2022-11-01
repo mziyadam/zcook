@@ -25,18 +25,6 @@
                 android:layout_width="108dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_zcook_with_text_white" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/btn_search"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:backgroundTint="#FFFFFF"
-                android:src="@drawable/ic_sharp_search_24" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 <androidx.core.widget.NestedScrollView

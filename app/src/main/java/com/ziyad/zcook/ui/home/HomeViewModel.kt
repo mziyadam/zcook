@@ -19,6 +19,17 @@ class HomeViewModel : ViewModel() {
 
     val currentUserLiveData = userRepository.currentUserLiveData
 
+    val searchResult = recipeRepository.searchResult
+
+    suspend fun searchRecipe(query: String) {
+        recipeRepository.searchRecipe(query)
+//    recipeRepository.injectData()
+    }
+
+    suspend fun clearSearch() {
+        recipeRepository.clearSearch()
+    }
+
     suspend fun saveRecipe(recipeId: String) {
         userRepository.saveRecipe(recipeId)
     }

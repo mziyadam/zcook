@@ -71,24 +71,30 @@ class RecipeRepository {
     val searchResult: LiveData<ArrayList<Recipe>> = _searchResult
 
     suspend fun searchRecipe(query: String) {
-        database.collection("recipes").addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("TEZ", "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                val allRecipe = arrayListOf<Recipe>()
-                for (doc in snapshot) {
-                    val mRecipe = doc.toObject(Recipe::class.java)
-                    if (mRecipe.name.lowercase().contains(query.lowercase())) {
-                        allRecipe.add(mRecipe)
-                    }
-                    Log.d("TEZ", "Current data: $doc")
+        if (query == "") {
+            _searchResult.postValue(arrayListOf())
+        } else {
+            database.collection("recipes").addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w("TEZ", "Listen failed.", e)
+                    return@addSnapshotListener
                 }
-                _searchResult.postValue(allRecipe)
-            } else {
-                Log.d("TEZ", "Current data: null")
+
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val allRecipe = arrayListOf<Recipe>()
+                    for (doc in snapshot) {
+                        val mRecipe = doc.toObject(Recipe::class.java)
+                        if (mRecipe.name.lowercase().contains(query.lowercase())) {
+                            allRecipe.add(mRecipe)
+                        }
+                        Log.d("TEZ", "Current data: $doc")
+                    }
+                    _searchResult.postValue(allRecipe)
+
+                    Log.d("TEZA", "Current data: ${allRecipe}")
+                } else {
+                    Log.d("TEZ", "Current data: null")
+                }
             }
         }
     }
@@ -289,14 +295,14 @@ class RecipeRepository {
             arrayListOf()
         )*/
         //TODO ADD RECIPE
-    /*database.collection("recipes")
-            .document(randomId)
-            .set(recipePearSalad)
-            .addOnCompleteListener {
-                Log.w("TEZ", "added $it")
-            }.addOnFailureListener {
-                Log.w("TEZ", "Error $it")
-            }*/
+        /*database.collection("recipes")
+                .document(randomId)
+                .set(recipePearSalad)
+                .addOnCompleteListener {
+                    Log.w("TEZ", "added $it")
+                }.addOnFailureListener {
+                    Log.w("TEZ", "Error $it")
+                }*/
     }
 
     companion object {

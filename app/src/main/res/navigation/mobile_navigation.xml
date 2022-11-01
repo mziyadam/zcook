@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_recipe_list" />
 
     <fragment
+        android:id="@+id/navigation_search_recipe"
+        android:name="com.ziyad.zcook.ui.home.search_recipe.SearchRecipeFragment"
+        android:label="@string/title_search_recipe"
+        tools:layout="@layout/fragment_search_recipe" />
+
+    <fragment
         android:id="@+id/navigation_saved_recipe_list"
         android:name="com.ziyad.zcook.ui.home.saved_recipe_list.SavedRecipeListFragment"
         android:label="@string/title_saved_recipe_list"
