@@ -12,12 +12,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class RecipeRepository {
-    private val database = FirebaseFirestore.getInstance()
     private val auth = Firebase.auth
+    private val database = FirebaseFirestore.getInstance()
     private val allRecipeLiveData = MutableLiveData<ArrayList<Recipe>>()
     private val recipeBelow10LiveData = MutableLiveData<ArrayList<Recipe>>()
     private val recipe10sLiveData = MutableLiveData<ArrayList<Recipe>>()
     private val currentRecipe = MutableLiveData<Recipe>()
+    private val _searchResult = MutableLiveData<ArrayList<Recipe>>()
+    val searchResult: LiveData<ArrayList<Recipe>> = _searchResult
 
     init {
         allRecipeLiveData.value = arrayListOf()
@@ -66,9 +68,6 @@ class RecipeRepository {
 
         return allRecipeLiveData
     }
-
-    private val _searchResult = MutableLiveData<ArrayList<Recipe>>()
-    val searchResult: LiveData<ArrayList<Recipe>> = _searchResult
 
     suspend fun searchRecipe(query: String) {
         if (query == "") {
@@ -175,9 +174,9 @@ class RecipeRepository {
         return statusLiveData
     }
 
-    suspend fun injectData() {
+    /*suspend fun injectData() {
         val randomId = UUID.randomUUID().toString()
-        /*val recipeNasiGoreng = Recipe(
+        val recipeNasiGoreng = Recipe(
             randomId,
             "Nasi Goreng Spesial",
             "https://img.okezone.com/content/2022/08/11/298/2646282/resep-nasi-goreng-rendah-kalori-cocok-untuk-diet-D8kxJ8GTcT.jpg",
@@ -212,8 +211,8 @@ class RecipeRepository {
                     "5. Tuang kecap manis, saus sambal, saus tiram, garam, dan kaldu bubuk. Aduk hingga warna nasi berubah secara merata.\n" +
                     "6. Nasi goreng biasa yang sederhana, dan enak siap disajikan.",
             arrayListOf()
-        )*/
-        /*val recipeFrenchFries = Recipe(
+        )
+        val recipeFrenchFries = Recipe(
             randomId,
             "Kentang Goreng Restoran",
             "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/french-fries.jpg?alt=media&token=a3f315ec-fa85-43cc-99e0-3fd13e3e7639",
@@ -233,8 +232,8 @@ class RecipeRepository {
                     "6. Sekarang goreng kembali kentang goreng untuk kedua kalinya 1/3 setiap kali selama 6 menit setiap batch kemudian bumbui kentang goreng dengan sedikit garam.\n" +
                     "7. Nikmati.",
             arrayListOf()
-        )*/
-        /*val recipePearSalad = Recipe(
+        )
+        val recipePearSalad = Recipe(
             randomId,
             "Salad Buah Pir",
             "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/pear-salad.jpg?alt=media&token=b5e47622-093c-4c91-9a55-337eb0cd46db",
@@ -252,8 +251,8 @@ class RecipeRepository {
                     "2. Susun daun selada di piring saji, diikuti dengan buah pir dan mayones. \n" +
                     "3. Nikmati dengan taburan paprika.",
             arrayListOf()
-        )*/
-        /*val recipe2DollarsSandwich = Recipe(
+        )
+        val recipe2DollarsSandwich = Recipe(
             randomId,
             "$2 Sandwich",
             "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/2dollar-sandwhich.jpg?alt=media&token=a12ce24e-0075-46b9-b6ad-3b13ff031d17",
@@ -268,8 +267,8 @@ class RecipeRepository {
             "1. Oleskan margarin pada kedua irisan roti secara merata dan taburi dengan gula.\n" +
                     "2. Nikmati.",
             arrayListOf()
-        )*/
-        /*val recipeILPancakes = Recipe(
+        )
+        val recipeILPancakes = Recipe(
             randomId,
             "I ♥ Pancakes\n",
             "https://firebasestorage.googleapis.com/v0/b/z-cook.appspot.com/o/il-pancakes.jpg?alt=media&token=0a128097-8206-4aa5-88a3-0f7209b41b69",
@@ -293,17 +292,17 @@ class RecipeRepository {
                     "6. Masak sekitar 1 menit per sisi. \n" +
                     "7. Ulangi dengan sisa campuran.",
             arrayListOf()
-        )*/
+        )
         //TODO ADD RECIPE
-        /*database.collection("recipes")
+        database.collection("recipes")
                 .document(randomId)
                 .set(recipePearSalad)
                 .addOnCompleteListener {
                     Log.w("TEZ", "added $it")
                 }.addOnFailureListener {
                     Log.w("TEZ", "Error $it")
-                }*/
-    }
+                }
+    }*/
 
     companion object {
         @Volatile

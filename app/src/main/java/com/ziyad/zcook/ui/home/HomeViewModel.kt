@@ -8,17 +8,12 @@ import com.ziyad.zcook.repository.UserRepository
 class HomeViewModel : ViewModel() {
     private val recipeRepository = RecipeRepository.getInstance()
     private val userRepository = UserRepository.getInstance()
-
     val allRecipe = recipeRepository.getAllRecipe()
     val recipe10s = recipeRepository.getRecipe10s()
     val recipeBelow10 = recipeRepository.getRecipeBelow10()
-
     val savedRecipe = userRepository.getSavedRecipe()
-
     val savedRecipeId = userRepository.getSavedRecipeId()
-
     val currentUserLiveData = userRepository.currentUserLiveData
-
     val searchResult = recipeRepository.searchResult
 
     suspend fun searchRecipe(query: String) {

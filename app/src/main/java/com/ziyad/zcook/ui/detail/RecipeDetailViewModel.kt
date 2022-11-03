@@ -12,11 +12,11 @@ import com.ziyad.zcook.utils.recipeDummy
 class RecipeDetailViewModel : ViewModel() {
     private val recipeRepository = RecipeRepository.getInstance()
     private val userRepository = UserRepository.getInstance()
-
-    val savedRecipeId = userRepository.getSavedRecipeId()
-    val currentUserLiveData = userRepository.currentUserLiveData
     private var _star=MutableLiveData<Double>()
     val star :LiveData<Double> =_star
+    val savedRecipeId = userRepository.getSavedRecipeId()
+    val currentUserLiveData = userRepository.currentUserLiveData
+
     suspend fun setStar(star:Double){
         _star.postValue(star)
     }

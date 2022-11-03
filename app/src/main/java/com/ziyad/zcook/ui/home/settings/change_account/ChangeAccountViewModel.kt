@@ -8,6 +8,6 @@ class ChangeAccountViewModel : ViewModel() {
     private val userRepository = UserRepository.getInstance()
 
     val currentUserLiveData = userRepository.currentUserLiveData
-    suspend fun changeEmailAndName(email: String, name: String): MutableLiveData<String> =
+    suspend fun changeEmailAndName(email: String, name: String) =
         userRepository.changeEmailAndName(email, name)
 }

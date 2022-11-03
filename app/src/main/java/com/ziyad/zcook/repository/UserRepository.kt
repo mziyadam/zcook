@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.ziyad.zcook.model.MahasiswaKos
 import com.ziyad.zcook.model.PersonalNote
 import com.ziyad.zcook.model.Recipe
+import com.ziyad.zcook.model.Review
 import com.ziyad.zcook.utils.recipeDummy
 import java.lang.Exception
 
@@ -132,7 +133,6 @@ class UserRepository {
 
     fun getSavedRecipeId(): MutableLiveData<ArrayList<String>> {
         val currentUser = auth.currentUser
-        //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid)
                 .addSnapshotListener { snapshot, e ->
@@ -238,7 +238,6 @@ class UserRepository {
     }
 
     suspend fun removeRecipeFromSaved(recipeId: String) {
-        //TODO NOT YET IMPLEMENTED
         val currentUser = auth.currentUser
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid).get()
@@ -375,14 +374,16 @@ class UserRepository {
                             if (mSnapshot != null && !mSnapshot.isEmpty) {
                                 for (doc in mSnapshot) {
                                     val mRecipe = doc.toObject(Recipe::class.java)
+                                    val newReview= arrayListOf<Review>()
                                     for (i in mRecipe.listReview) {
                                         if (i.userId == mCurrentUser.uid) {
-                                            val newReview =
-                                                i.copy(userName = mCurrentUser.displayName.toString())
-                                            mRecipe.listReview.remove(i)
-                                            mRecipe.listReview.add(newReview)
+                                            newReview.add(i.copy(userName = mCurrentUser.displayName.toString()))
+                                        }else{
+                                            newReview.add(i)
                                         }
                                     }
+                                    mRecipe.listReview.clear()
+                                    mRecipe.listReview.addAll(newReview)
                                     database.collection("recipes").document(mRecipe.id).set(mRecipe)
                                         .addOnSuccessListener {
                                             Log.d("TEZ", "Current data: $doc")
