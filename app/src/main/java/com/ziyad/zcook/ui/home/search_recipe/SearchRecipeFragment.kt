@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.ziyad.zcook.R
@@ -62,11 +63,66 @@ class SearchRecipeFragment : Fragment() {
                                     if (user != null) {
                                         if (savedRecipeId.contains(recipe.id)) {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                val message =
+                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         } else {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.saveRecipe(recipe.id)
+                                                val message = homeViewModel.saveRecipe(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
@@ -86,6 +142,7 @@ class SearchRecipeFragment : Fragment() {
             return root
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

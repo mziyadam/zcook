@@ -162,7 +162,6 @@ class UserRepository {
 
     fun getSavedRecipe(): MutableLiveData<ArrayList<Recipe>> {
         val currentUser = auth.currentUser
-        //TODO NOT YET IMPLEMENTED -> GET WHERE ID RESEP=SAVED
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid)
                 .addSnapshotListener { snapshot, e ->
@@ -211,8 +210,10 @@ class UserRepository {
         return savedRecipe
     }
 
-    suspend fun saveRecipe(recipeId: String) {
+    suspend fun saveRecipe(recipeId: String): MutableLiveData<String> {
         val currentUser = auth.currentUser
+        val statusLiveData = MutableLiveData<String>()
+        statusLiveData.postValue("LOADING")
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid).get()
                 .addOnSuccessListener { document ->
@@ -224,21 +225,28 @@ class UserRepository {
                             .set(mahasiswaKos!!).addOnSuccessListener {
                                 Log.d("TEZ", "Current data: $it")
                                 savedRecipeId.postValue(mahasiswaKos.listSavedRecipeId)
+                                statusLiveData.postValue("SUCCESS")
                             }.addOnFailureListener {
                                 Log.d("TEZ", "Current data: $it")
+                                statusLiveData.postValue(it.toString())
                             }
                     } else {
                         Log.d(TAG, "No such document")
+                        statusLiveData.postValue("No such document")
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
+                    statusLiveData.postValue(exception.toString())
                 }
         }
+        return statusLiveData
     }
 
-    suspend fun removeRecipeFromSaved(recipeId: String) {
+    suspend fun removeRecipeFromSaved(recipeId: String): MutableLiveData<String> {
         val currentUser = auth.currentUser
+        val statusLiveData = MutableLiveData<String>()
+        statusLiveData.postValue("LOADING")
         currentUser?.let {
             database.collection("mahasiswa_kos").document(it.uid).get()
                 .addOnSuccessListener { document ->
@@ -250,17 +258,22 @@ class UserRepository {
                             .set(mahasiswaKos!!).addOnSuccessListener {
                                 Log.d("TEZ", "Current data: $it")
                                 savedRecipeId.postValue(mahasiswaKos.listSavedRecipeId)
+                                statusLiveData.postValue("SUCCESS")
                             }.addOnFailureListener {
                                 Log.d("TEZ", "Current data: $it")
+                                statusLiveData.postValue(it.toString())
                             }
                     } else {
                         Log.d(TAG, "No such document")
+                        statusLiveData.postValue("No such document")
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
+                    statusLiveData.postValue(exception.toString())
                 }
         }
+        return statusLiveData
     }
 
     fun getPersonalNote(recipeId: String): MutableLiveData<String> {

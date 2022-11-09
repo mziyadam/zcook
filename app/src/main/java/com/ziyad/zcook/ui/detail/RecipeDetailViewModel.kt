@@ -23,13 +23,9 @@ class RecipeDetailViewModel : ViewModel() {
 
     fun currentRecipe(recipeId: String) = recipeRepository.getRecipe(recipeId)
 
-    suspend fun saveRecipe(recipeId: String) {
-        userRepository.saveRecipe(recipeId)
-    }
+    suspend fun saveRecipe(recipeId: String)=userRepository.saveRecipe(recipeId)
 
-    suspend fun removeRecipeFromSaved(recipeId: String) {
-        userRepository.removeRecipeFromSaved(recipeId)
-    }
+    suspend fun removeRecipeFromSaved(recipeId: String)=userRepository.removeRecipeFromSaved(recipeId)
 
     suspend fun addRatingAndReview(recipeId: String, rating: Double, review: String) =
         recipeRepository.addRatingAndReview(recipeId, rating, review)

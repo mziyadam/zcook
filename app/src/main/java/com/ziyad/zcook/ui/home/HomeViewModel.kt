@@ -25,13 +25,9 @@ class HomeViewModel : ViewModel() {
         recipeRepository.clearSearch()
     }
 
-    suspend fun saveRecipe(recipeId: String) {
-        userRepository.saveRecipe(recipeId)
-    }
+    suspend fun saveRecipe(recipeId: String)=userRepository.saveRecipe(recipeId)
 
-    suspend fun removeRecipeFromSaved(recipeId: String) {
-        userRepository.removeRecipeFromSaved(recipeId)
-    }
+    suspend fun removeRecipeFromSaved(recipeId: String)=userRepository.removeRecipeFromSaved(recipeId)
 
     suspend fun logout() = userRepository.logout()
 }

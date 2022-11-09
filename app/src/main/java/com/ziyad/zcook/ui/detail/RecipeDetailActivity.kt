@@ -214,14 +214,68 @@ class RecipeDetailActivity : AppCompatActivity() {
                                 btnSave.setImageDrawable(saveDrawable)
                                 btnSave.setOnClickListener {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        recipeDetailViewModel.removeRecipeFromSaved(mRecipe.id)
+                                        val message=recipeDetailViewModel.removeRecipeFromSaved(mRecipe.id)
+                                        lifecycleScope.launch(Dispatchers.Main) {
+                                            message.observe(this@RecipeDetailActivity) {mIt->
+                                                when (mIt) {
+                                                    "SUCCESS" -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Success",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                    "LOADING" -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Loading",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                    else -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            mIt,
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             } else {
                                 btnSave.setImageDrawable(saveBorderDrawable)
                                 btnSave.setOnClickListener {
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        recipeDetailViewModel.saveRecipe(mRecipe.id)
+                                        val message=recipeDetailViewModel.saveRecipe(mRecipe.id)
+                                        lifecycleScope.launch(Dispatchers.Main) {
+                                            message.observe(this@RecipeDetailActivity) {mIt->
+                                                when (mIt) {
+                                                    "SUCCESS" -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Success",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                    "LOADING" -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            "Loading",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                    else -> {
+                                                        Toast.makeText(
+                                                            this@RecipeDetailActivity,
+                                                            mIt,
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

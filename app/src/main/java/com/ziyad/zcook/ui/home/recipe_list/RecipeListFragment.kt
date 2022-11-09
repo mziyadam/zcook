@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
@@ -57,11 +58,66 @@ class RecipeListFragment : Fragment() {
                                     if (user != null) {
                                         if (listSavedRecipeId.contains(recipe.id)) {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                val message =
+                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         } else {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.saveRecipe(recipe.id)
+                                                val message = homeViewModel.saveRecipe(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
@@ -93,11 +149,66 @@ class RecipeListFragment : Fragment() {
                                     if (user != null) {
                                         if (listSavedRecipeId.contains(recipe.id)) {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                val message =
+                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         } else {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.saveRecipe(recipe.id)
+                                                val message = homeViewModel.saveRecipe(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
@@ -130,11 +241,66 @@ class RecipeListFragment : Fragment() {
                                     if (user != null) {
                                         if (listSavedRecipeId.contains(recipe.id)) {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                val message =
+                                                    homeViewModel.removeRecipeFromSaved(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         } else {
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                homeViewModel.saveRecipe(recipe.id)
+                                                val message = homeViewModel.saveRecipe(recipe.id)
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    message.observe(viewLifecycleOwner) { mIt ->
+                                                        when (mIt) {
+                                                            "SUCCESS" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Success",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            "LOADING" -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    "Loading",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                            else -> {
+                                                                Toast.makeText(
+                                                                    requireContext(),
+                                                                    mIt,
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
