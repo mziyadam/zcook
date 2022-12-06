@@ -1,17 +1,19 @@
 package com.ziyad.zcook.ui.home.search_recipe
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.ziyad.zcook.R
-import com.ziyad.zcook.databinding.FragmentSavedRecipeListBinding
 import com.ziyad.zcook.databinding.FragmentSearchRecipeBinding
 import com.ziyad.zcook.ui.adapter.RecipeAdapter
 import com.ziyad.zcook.ui.auth.login.LoginActivity
@@ -19,6 +21,7 @@ import com.ziyad.zcook.ui.detail.RecipeDetailActivity
 import com.ziyad.zcook.ui.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class SearchRecipeFragment : Fragment() {
 
@@ -46,6 +49,20 @@ class SearchRecipeFragment : Fragment() {
                     homeViewModel.searchRecipe(etSearchQuery.text.toString())
                 }
             }
+            etSearchQuery.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    rvSearchResult.visibility = View.VISIBLE
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        homeViewModel.clearSearch()
+                        homeViewModel.searchRecipe(etSearchQuery.text.toString())
+                    }
+                    val imm = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken,0)
+                    handled = true
+                }
+                handled
+            })
             homeViewModel.savedRecipeId.observe(viewLifecycleOwner) { savedRecipeId ->
                 homeViewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
                     Log.d("TEZ", "Current data: $savedRecipeId")

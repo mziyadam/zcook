@@ -182,12 +182,7 @@ class UserRepository {
                         }
                         Log.d("TEZaZ", "Current data: $allRecipeId")
                         database.collection("recipes")
-                            .addSnapshotListener { mSnapshot, mE ->
-                                if (mE != null) {
-                                    Log.w("TEZ", "Listen failed.", mE)
-                                    return@addSnapshotListener
-                                }
-
+                            .get().addOnSuccessListener { mSnapshot->
                                 if (mSnapshot != null && !mSnapshot.isEmpty) {
                                     for (doc in mSnapshot) {
                                         val mRecipe = doc.toObject(Recipe::class.java)
@@ -355,65 +350,68 @@ class UserRepository {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "User email address updated.")
+                        updateProfile(profileUpdates)
+                            .addOnCompleteListener { mTask ->
+                                if (mTask.isSuccessful) {
+                                    Log.d(TAG, "User email address updated.")
+                                    val mCurrentUser = auth.currentUser
+                                    val mahasiswaKos = MahasiswaKos(
+                                        mCurrentUser!!.uid,
+                                        mCurrentUser.displayName!!
+                                    )
+                                    statusLiveData.postValue("SUCCESS")
+                                    database.collection("mahasiswa_kos")
+                                        .document(mahasiswaKos.id)
+                                        .update("name",mahasiswaKos.name)
+                                        .addOnSuccessListener {
+                                            _currentUserLiveData.postValue(auth.currentUser)
+                                        }.addOnFailureListener {
+                                            Log.d("TEZZ", "Error : $it")
+                                            statusLiveData.postValue("$it")
+                                            _currentUserLiveData.postValue(auth.currentUser)
+                                        }
+                                    database.collection("recipes").get().addOnSuccessListener { mSnapshot ->
+                                        if (mSnapshot != null && !mSnapshot.isEmpty) {
+                                            val listRecipeTemp= arrayListOf<Recipe>()
+                                            for (doc in mSnapshot) {
+                                                val mRecipe = doc.toObject(Recipe::class.java)
+                                                val newReview= arrayListOf<Review>()
+                                                for (i in mRecipe.listReview) {
+                                                    if (i.userId == mCurrentUser.uid) {
+                                                        newReview.add(i.copy(userName = mCurrentUser.displayName.toString()))
+                                                    }else{
+                                                        newReview.add(i)
+                                                    }
+                                                }
+                                                mRecipe.listReview.clear()
+                                                mRecipe.listReview.addAll(newReview)
+                                                listRecipeTemp.add(mRecipe)
 
-                    }
-                }.addOnFailureListener {
-                    Log.d("TEZZ", "Error : $it")
-                    statusLiveData.value.plus("ERR")
-                    _currentUserLiveData.postValue(auth.currentUser)
-                }
+                                            }
+                                            for (mRecipe in listRecipeTemp) {
+                                                database.collection("recipes").document(mRecipe.id).update("listReview",mRecipe.listReview)
+                                                    .addOnSuccessListener {
+                                                        Log.d("TEZX", "Current data: $mRecipe")
+                                                    }.addOnFailureListener {
+                                                        Log.d("TEZ", "Error : $it")
+                                                    }
+                                                Log.d("TEZ", "Current data: $mRecipe")
+                                            }
+                                        } else {
+                                            Log.d("TEZ", "Current data: null")
+                                        }
 
-            updateProfile(profileUpdates)
-                .addOnCompleteListener { mTask ->
-                    if (mTask.isSuccessful) {
-                        Log.d(TAG, "User email address updated.")
-                        val mCurrentUser = auth.currentUser
-                        val mahasiswaKos = MahasiswaKos(
-                            mCurrentUser!!.uid,
-                            mCurrentUser.displayName!!
-                        )
-                        statusLiveData.postValue("SUCCESS")
-                        database.collection("mahasiswa_kos")
-                            .document(mahasiswaKos.id)
-                            .set(mahasiswaKos)
-                            .addOnSuccessListener {
-                                _currentUserLiveData.postValue(auth.currentUser)
+                                    }
+                                }
                             }.addOnFailureListener {
                                 Log.d("TEZZ", "Error : $it")
                                 statusLiveData.postValue("$it")
                                 _currentUserLiveData.postValue(auth.currentUser)
                             }
-                        database.collection("recipes").get().addOnSuccessListener { mSnapshot ->
-                            if (mSnapshot != null && !mSnapshot.isEmpty) {
-                                for (doc in mSnapshot) {
-                                    val mRecipe = doc.toObject(Recipe::class.java)
-                                    val newReview= arrayListOf<Review>()
-                                    for (i in mRecipe.listReview) {
-                                        if (i.userId == mCurrentUser.uid) {
-                                            newReview.add(i.copy(userName = mCurrentUser.displayName.toString()))
-                                        }else{
-                                            newReview.add(i)
-                                        }
-                                    }
-                                    mRecipe.listReview.clear()
-                                    mRecipe.listReview.addAll(newReview)
-                                    database.collection("recipes").document(mRecipe.id).set(mRecipe)
-                                        .addOnSuccessListener {
-                                            Log.d("TEZ", "Current data: $doc")
-                                        }.addOnFailureListener {
-                                            Log.d("TEZ", "Error : $it")
-                                        }
-                                    Log.d("TEZ", "Current data: $doc")
-                                }
-                            } else {
-                                Log.d("TEZ", "Current data: null")
-                            }
-
-                        }
                     }
                 }.addOnFailureListener {
                     Log.d("TEZZ", "Error : $it")
-                    statusLiveData.value.plus("$it")
+                    statusLiveData.postValue("$it")
                     _currentUserLiveData.postValue(auth.currentUser)
                 }
         }

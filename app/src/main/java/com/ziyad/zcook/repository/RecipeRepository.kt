@@ -29,6 +29,7 @@ class RecipeRepository {
     }
 
     fun getRecipe(recipeId: String): MutableLiveData<Recipe> {
+        Log.w("RECIPEID", "$recipeId")
         database.collection("recipes").document(recipeId).addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("TEZ", "Listen failed.", e)
@@ -37,7 +38,7 @@ class RecipeRepository {
 
             if (snapshot != null && snapshot.exists()) {
                 val mRecipe = snapshot.toObject(Recipe::class.java)!!
-                Log.d("TEZ", "Current data: $mRecipe")
+                Log.d("TEZ", "Current data: ${mRecipe.name}")
                 currentRecipe.postValue(mRecipe)
             } else {
                 Log.d("TEZ", "Current data: null")
@@ -175,8 +176,8 @@ class RecipeRepository {
     }
 
     suspend fun injectData() {
-        val randomId = UUID.randomUUID().toString()
-        /*val recipeNasiGoreng = Recipe(
+        /*val randomId = UUID.randomUUID().toString()
+        val recipeNasiGoreng = Recipe(
             randomId,
             "Nasi Goreng Spesial",
             "https://img.okezone.com/content/2022/08/11/298/2646282/resep-nasi-goreng-rendah-kalori-cocok-untuk-diet-D8kxJ8GTcT.jpg",
@@ -421,7 +422,6 @@ class RecipeRepository {
                     "4. Nikmati.",
             arrayListOf()
         )
-        */
         val addList = arrayListOf<Recipe>()
         val nasiGorengBumbuRacik = Recipe(
             UUID.randomUUID().toString(),
@@ -471,7 +471,7 @@ class RecipeRepository {
             arrayListOf()
         )
         addList.add(nasiGorengKecapManis)
-        /*
+
         val telurDadarGaring = Recipe(
             UUID.randomUUID().toString(),
             "Telur Dadar Garing",
@@ -714,7 +714,7 @@ class RecipeRepository {
                     "6. Beri air dan kaldu ayam, masak sampai mendidih. Masukkan bakso ikan, aduk dan masak sampai bakso matang. Angkat. ",
             arrayListOf()
         )
-        addList.add(sayurOyongBumbuEbi)*/
+        addList.add(sayurOyongBumbuEbi)
         //TODO ADD RECIPE
         for (i in addList) {
             database.collection("recipes")
@@ -726,6 +726,8 @@ class RecipeRepository {
                     Log.w("TEZ", "Error $it")
                 }
         }
+
+         */
     }
 
     companion object {

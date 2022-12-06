@@ -159,7 +159,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                         btnSaveReview.setOnClickListener {
                             val mStar=recipeDetailViewModel.star.value
                             Log.w("TEZZ", mStar.toString())
-                                if (mStar != 0.0) {
+                                if (mStar != null) {
                                     lifecycleScope.launch(Dispatchers.IO) {
                                         val message = recipeDetailViewModel.addRatingAndReview(
                                             mRecipe.id,

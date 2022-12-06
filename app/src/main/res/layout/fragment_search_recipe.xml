@@ -26,6 +26,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSend"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/inter_component_margin_normal"
                 android:hint="@string/cari_resep" />
